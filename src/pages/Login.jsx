@@ -22,6 +22,7 @@ export function Login() {
       Cookies.set("token", token, { expires: 7 });
       // Opcionalmente, guarda datos de usuario (puede ser en context)
       Cookies.set("user", JSON.stringify(user), { expires: 7 });
+      
       toast.success("Login exitoso", { position: "top-center" });
       console.log("Login exitoso", res.data);
       // Redirige a la pantalla principal protegida (por ejemplo, Dashboard)
