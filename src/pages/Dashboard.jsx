@@ -27,10 +27,10 @@ export function Dashboard() {
         {/* Sección de usuario */}
         <div className="bg-[#1572E8] text-white py-4 px-4 text-xl font-bold w-1/5 flex items-center space-x-4">
           <div>
-            <h1 className="text-2xl font-bold mb-4">
-              Bienvenido: {user ? user.correo : "Desconocido"}
+            <h1 className="text-xl font-bold mb-4">
+              {user && user.nombre ? user.nombre : "Desconocido"}
             </h1>
-            <p className="text-sm">Administrador</p>
+            <p className="text-lg">{user ? user.rol : "Desconocido"}</p>
           </div>
         </div>
         {/* Sección de título con header */}
