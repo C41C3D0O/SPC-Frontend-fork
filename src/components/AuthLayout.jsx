@@ -1,7 +1,6 @@
 import React from "react";
 import { Outlet } from "react-router-dom";
 import { Navigation } from "./Navigation";
-import { VolverButton } from "./VolverButton";
 import { Toaster } from "react-hot-toast";
 
 export function AuthLayout() {

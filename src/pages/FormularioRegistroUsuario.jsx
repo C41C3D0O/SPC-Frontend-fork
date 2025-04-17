@@ -36,11 +36,11 @@ export function FormularioRegistroUsuarios() {
   const navigate = useNavigate();
   const params = useParams();
   // Observar el valor del campo "rol"
-  const rol = watch("rol", "Coordinador");
+  const rol = watch("rol", "");
 
   const onSubmit = handleSubmit(async (data) => {
     // Si el rol es Vicerrector, forzamos el campo programa a cadena vacía.
-    if (data.rol === "Vicerrector") {
+    if (data.rol !== "Coordinador") {
       data.programa = "";
     }
 
@@ -129,6 +129,8 @@ export function FormularioRegistroUsuarios() {
           {...register("rol", { required: "El rol es requerido" })}
           className="bg-[#d7e9ff] p-3 rounded-lg block w-full mb-3"
         >
+          <option value="" disabled>Seleccione un rol</option>
+          <option value="Administrador">Administrador</option>
           <option value="Coordinador">Coordinador</option>
           <option value="Vicerrector">Vicerrector</option>
         </select>
@@ -196,8 +198,7 @@ export function FormularioRegistroUsuarios() {
           </button>
           
         </div>
-        
-        
+                
       )}
       <div className="flex justify-center mt-10">
           <Link to="/gestion-usuarios">
