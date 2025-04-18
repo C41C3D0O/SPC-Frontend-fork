@@ -30,7 +30,7 @@ export function Dashboard() {
             <h1 className="text-xl font-bold mb-4">
               {user && user.nombre ? user.nombre : "Desconocido"}
             </h1>
-            <p className="text-lg">{user ? user.rol : "Desconocido"}</p>
+            <p className="text-base">{user ? user.rol : "Desconocido"}</p>
           </div>
         </div>
         {/* Sección de título con header */}

@@ -1,5 +1,7 @@
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
+import Cookies from "js-cookie";
+
 import {
   createUsuarios,
   deleteUsuarios,
@@ -85,18 +87,24 @@ export function FormularioRegistroUsuarios() {
     }
     loadUsuarios();
   }, []);
+  const user = Cookies.get("user") ? JSON.parse(Cookies.get("user")) : null;
+
 
   return (
     <div className="min-h-screen flex flex-col">
       {/* Header */}
       <div className="flex w-full">
-        <div className="bg-[#1572E8] text-white py-4 px-4 text-xl font-bold w-1/5 flex flex-col justify-center">
-          <p className="text-lg">Pepito</p>
-          <p className="text-sm">Coordinador</p>
+      <div className="bg-[#1572E8] text-white py-4 px-4 text-xl font-bold w-1/5 flex items-center space-x-4">
+          <div>
+            <h1 className="text-xl font-bold mb-4">
+              {user && user.nombre ? user.nombre : "Desconocido"}
+            </h1>
+            <p className="text-base">{user ? user.rol : "Desconocido"}</p>
+          </div>
         </div>
 
         <div className="bg-gradient-to-r from-[#00498B] to-[#001325] text-white py-8 px-8 text-xl font-bold w-4/5 flex justify-start items-center">
-          <h1 className="text-xl font-semibold">REGISTRO / MODIFICACIÓN DE USUARIOS</h1>
+          <h1 className="text-xl font-semibold">REGISTRO DE USUARIOS</h1>
         </div>
       </div>
 
