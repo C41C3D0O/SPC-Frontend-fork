@@ -15,6 +15,7 @@ import { FormularioRegistroUsuarios } from "./pages/FormularioRegistroUsuario";
 import { GestionUsuarios } from "./components/GestionUsuarios";
 import { DashboardCoordinador } from "./pages/DashboardCoordinador";
 import { DashboardVicerrector } from "./pages/DashboardVicerrector";
+import { UpdatePassword } from "./pages/UpdatePassword";
 
 const isAuthenticated = () => !!Cookies.get("token");
 
@@ -25,6 +26,11 @@ function App() {
         {/* Rutas públicas */}
         <Route element={<PublicLayout />}>
           <Route path="/login" element={<Login />} />
+        </Route>
+
+        {/* Rutas públicas */}
+        <Route element={<PublicLayout />}>
+          <Route path="/Actualizar-contraseña/:id" element={<UpdatePassword />} />
         </Route>
 
         {/* Rutas protegidas */}

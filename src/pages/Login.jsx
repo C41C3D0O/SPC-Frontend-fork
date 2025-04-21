@@ -24,6 +24,7 @@ export function Login() {
       const { token, user } = res.data;
       Cookies.set("token", token, { expires: 7 });
       Cookies.set("user", JSON.stringify(user), { expires: 7 });
+      Cookies.set("userId", user.id, { expires: 7 });
   
       toast.success("Login exitoso", { position: "top-center" });
       console.log("Login exitoso", res.data);

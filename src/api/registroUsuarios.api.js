@@ -13,3 +13,4 @@ export const createUsuarios = (registro) => registroUsuariosApi.post("/", regist
 export const deleteUsuarios = (id) => registroUsuariosApi.delete(`/${id}/`);
 
 export const updateUsuarios = (id, registro) => registroUsuariosApi.patch(`/${id}/`, registro);
+

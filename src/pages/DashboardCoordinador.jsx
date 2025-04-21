@@ -13,6 +13,15 @@ export function DashboardCoordinador() {
   const navigate = useNavigate();
   const user = Cookies.get("user") ? JSON.parse(Cookies.get("user")) : null;
 
+  const userID = Cookies.get("userId")
+  const registroUsuarios = {
+    id: userID
+  };
+
+  const IDNavigate = () =>{
+    navigate(`/Actualizar-contraseña/${registroUsuarios.id}`)
+  }
+
   const handleLogout = () => {
     Cookies.remove("token");
     Cookies.remove("user");
@@ -51,11 +60,13 @@ export function DashboardCoordinador() {
           {/* Aqui se debe poner la logica de Delgado para actualizar contrasenas y cambiar icono */}
           <div className="flex flex-col items-center space-y-4">
             <img src={userCogIcon} alt="Gestión de usuario" className="w-20 h-20" />
-            <Link to="/gestion-usuarios">
-              <button className="bg-[#1572E8] px-6 py-3 rounded-lg text-white font-bold hover:bg-[#0f5fc7] transition-all duration-300">
+            
+              <button 
+              onClick={IDNavigate}
+              className="bg-[#1572E8] px-6 py-3 rounded-lg text-white font-bold hover:bg-[#0f5fc7] transition-all duration-300">
                 Actualizar contraseña
               </button>
-            </Link>
+            
           </div>
         </div>
       </div>
