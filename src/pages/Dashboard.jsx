@@ -43,7 +43,7 @@ export function Dashboard() {
           {/* Cargar archivos */}
           <div className="flex flex-col items-center space-y-4">
             <img src={uploadIcon} alt="Cargar archivos" className="w-20 h-20" />
-            <button className="bg-[#1572E8] px-6 py-3 rounded-lg text-white font-bold hover:bg-[#0f5fc7] transition-all duration-300">
+            <button onClick={() => navigate('/upload')} className="bg-[#1572E8] px-6 py-3 rounded-lg text-white font-bold hover:bg-[#0f5fc7] transition-all duration-300">
               Cargar archivos
             </button>
           </div>
@@ -55,7 +55,7 @@ export function Dashboard() {
               alt="Visualizar proyecciones"
               className="w-20 h-20"
             />
-            <button className="bg-[#1572E8] px-6 py-3 rounded-lg text-white font-bold hover:bg-[#0f5fc7] transition-all duration-300">
+            <button onClick={() => navigate('/visualizar-proyecciones')} className="bg-[#1572E8] px-6 py-3 rounded-lg text-white font-bold hover:bg-[#0f5fc7] transition-all duration-300">
               Visualizar proyecciones
             </button>
           </div>

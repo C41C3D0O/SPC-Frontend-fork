@@ -16,6 +16,8 @@ import { GestionUsuarios } from "./components/GestionUsuarios";
 import { DashboardCoordinador } from "./pages/DashboardCoordinador";
 import { DashboardVicerrector } from "./pages/DashboardVicerrector";
 import { UpdatePassword } from "./pages/UpdatePassword";
+import { UploadPage } from "./pages/UploadPage";
+import { VisualizarProyecciones } from "./pages/VisualizarProyecciones";
 
 const isAuthenticated = () => !!Cookies.get("token");
 
@@ -30,7 +32,10 @@ function App() {
 
         {/* Rutas públicas */}
         <Route element={<PublicLayout />}>
-          <Route path="/Actualizar-contraseña/:id" element={<UpdatePassword />} />
+          <Route
+            path="/Actualizar-contraseña/:id"
+            element={<UpdatePassword />}
+          />
         </Route>
 
         {/* Rutas protegidas */}
@@ -75,6 +80,28 @@ function App() {
             element={<FormularioRegistroUsuarios />}
           />
           <Route path="/gestion-usuarios" element={<GestionUsuarios />} />
+
+          <Route
+            path="/upload"
+            element={
+              isAuthenticated() ? (
+                <UploadPage />
+              ) : (
+                <Navigate to="/login" replace />
+              )
+            }
+          />
+
+          <Route
+            path="/visualizar-proyecciones"
+            element={
+              isAuthenticated() ? (
+                <VisualizarProyecciones />
+              ) : (
+                <Navigate to="/login" />
+              )
+            }
+          />
         </Route>
 
         {/* Redirección fallback */}
