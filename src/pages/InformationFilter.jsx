@@ -43,7 +43,7 @@ export function InformationFilter() {
     "Décimo",
   ];
 
-  const VERSION_PERMITIDOS = ["Todos", "Preliminar", "Final"];
+  const VERSION_PERMITIDOS = ["Preliminar", "Final"];
 
   const CURSOS_PERMITIDOS = [
     "Todos",
