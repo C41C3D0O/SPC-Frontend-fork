@@ -52,7 +52,7 @@ export function DashboardVicerrector() {
           {/* Visualizar proyecciones */}
           <div className="flex flex-col items-center space-y-4">
             <img src={viewIcon} alt="Visualizar proyecciones" className="w-20 h-20" />
-            <button className="bg-[#1572E8] px-6 py-3 rounded-lg text-white font-bold hover:bg-[#0f5fc7] transition-all duration-300">
+            <button className="bg-[#1572E8] px-6 py-3 rounded-lg text-white font-bold hover:bg-[#0f5fc7] transition-all duration-300" onClick={() => navigate('/visualizar-proyecciones')}>
               Visualizar proyecciones
             </button>
           </div>

@@ -36,6 +36,17 @@ export function VisualizarProyecciones() {
     );
   };
 
+  function rolnavigation(){
+        const userRol = Cookies.get("userRol");
+      if (userRol === "Coordinador") {
+        navigate("/dashboard-coordinador");
+      } else if (userRol === "Vicerrector") {
+        navigate("/dashboard-vicerrector");
+      } else {
+        navigate("/dashboard");
+      }
+      }
+
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-r from-[#d7e9ff] to-[#f5faff]">
       {/* Header */}
@@ -101,7 +112,7 @@ export function VisualizarProyecciones() {
       {/* Footer */}
       <footer className="bg-gradient-to-r from-[#00498B] to-[#001325] text-white py-4 px-8 flex justify-end">
         <button
-          onClick={() => navigate('/dashboard')}
+          onClick={rolnavigation}
           className="bg-[#1572E8] px-4 py-2 rounded-lg hover:bg-[#0f5fc7] transition duration-300"
         >
           Volver al Dashboard

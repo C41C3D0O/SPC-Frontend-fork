@@ -18,8 +18,12 @@ import { DashboardVicerrector } from "./pages/DashboardVicerrector";
 import { UpdatePassword } from "./pages/UpdatePassword";
 import { UploadPage } from "./pages/UploadPage";
 import { VisualizarProyecciones } from "./pages/VisualizarProyecciones";
+import {InformationFilter} from "./pages/InformationFilter"
 
 const isAuthenticated = () => !!Cookies.get("token");
+
+
+
 
 function App() {
   return (
@@ -29,6 +33,10 @@ function App() {
         <Route element={<PublicLayout />}>
           <Route path="/login" element={<Login />} />
         </Route>
+
+        
+          <Route path="/filtro-de-informacion" element={<InformationFilter />} />
+        
 
         {/* Rutas públicas */}
         <Route element={<PublicLayout />}>

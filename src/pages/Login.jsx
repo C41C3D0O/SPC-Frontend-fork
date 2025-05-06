@@ -25,6 +25,7 @@ export function Login() {
       Cookies.set("token", token, { expires: 7 });
       Cookies.set("user", JSON.stringify(user), { expires: 7 });
       Cookies.set("userId", user.id, { expires: 7 });
+      Cookies.set("userRol", user.rol, { expires: 7 });
   
       toast.success("Login exitoso", { position: "top-center" });
       console.log("Login exitoso", res.data);

@@ -7,9 +7,23 @@ import {
 } from "../api/registroUsuarios.api";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-hot-toast";
-import { Link } from "react-router-dom";
+
 
 export function UpdatePassword() {
+
+ 
+    function rolnavigation(){
+      const userRol = Cookies.get("userRol");
+    if (userRol === "Coordinador") {
+      navigate("/dashboard-coordinador");
+    } else if (userRol === "Vicerrector") {
+      navigate("/dashboard-vicerrector");
+    } else {
+      navigate("/login");
+    }
+    }
+  
+
   const {
     register,
     handleSubmit,
@@ -116,7 +130,7 @@ export function UpdatePassword() {
 
             <div className="flex justify-end m-2">
                 
-              <button className="bg-[#1572E8] text-white px-4 py-2 rounded-lg w-full hover:bg-[#0f5fc7] transition-all duration-300 ">
+              <button onClick={rolnavigation} className="bg-[#1572E8] px-4 py-2 rounded-lg text-white hover:bg-[#0f5fc7] transition-all duration-300">
                 Guardar
               </button>
             </div>
@@ -125,12 +139,12 @@ export function UpdatePassword() {
       </div>
 
       {/* Footer */}
-      <footer className="bg-gradient-to-r from-[#00498B] to-[#001325] text-white py-4 px-8 text-xl font-bold flex justify-end">
-        <Link to="/dashboard-coordinador">
-          <button className="bg-[#1572E8] px-3 py-2 rounded-lg text-white hover:bg-[#0f5fc7] transition-all duration-300">
-            Volver
-          </button>
-        </Link>
+      <footer className="bg-gradient-to-r from-[#00498B] to-[#001325] text-white py-4 px-8 flex justify-end">
+        <button
+          onClick={rolnavigation}
+          className="bg-[#1572E8] px-4 py-2 rounded-lg text-white hover:bg-[#0f5fc7] transition-all duration-300">
+          Volver
+        </button>
       </footer>
     </div>
   );

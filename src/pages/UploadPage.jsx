@@ -35,6 +35,11 @@ export function UploadPage() {
     }
   };
 
+  const handleProjection = (type) => {
+    toast.success(`Proyección ${type} iniciada`, { position: 'top-center' });
+    // Aquí puedes agregar la lógica para iniciar la proyección preliminar o final
+  };
+
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-r from-[#d7e9ff] to-[#f5faff]">
       {/* Header */}
@@ -75,6 +80,22 @@ export function UploadPage() {
               </div>
             </div>
           ))}
+
+          {/* Botones de proyección */}
+          <div className="mt-8 flex flex-col space-y-4">
+            <button
+              onClick={() => handleProjection('Preliminar')}
+              className="w-full bg-[#1572E8] text-white py-2 rounded-lg hover:bg-[#0f5fc7] transition-all duration-300"
+            >
+              Realizar Proyección Preliminar
+            </button>
+            <button
+              onClick={() => handleProjection('Final')}
+              className="w-full bg-[#1572E8] text-white py-2 rounded-lg hover:bg-[#0f5fc7] transition-all duration-300"
+            >
+              Realizar Proyección Final
+            </button>
+          </div>
         </div>
       </div>
 
