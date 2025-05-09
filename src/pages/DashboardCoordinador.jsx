@@ -43,7 +43,7 @@ export function DashboardCoordinador() {
         </div>
         {/* Sección de título con header */}
         <div className="bg-gradient-to-r from-[#00498B] to-[#001325] text-white py-8 px-8 text-xl font-bold w-4/5 flex justify-start items-center">
-          <h1 className="text-xl font-semibold">DASHBOARD DEL COORDINADOR</h1>
+          <h1 className="text-xl font-semibold">SISTEMA DE PROYECCIÓN DE CURSOS</h1>
         </div>
       </div>
       <div className="bg-[#d7e9ff] mx-20 p-20 rounded-lg mt-14">

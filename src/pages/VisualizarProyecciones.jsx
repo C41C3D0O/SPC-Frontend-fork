@@ -115,7 +115,7 @@ export function VisualizarProyecciones() {
           onClick={rolnavigation}
           className="bg-[#1572E8] px-4 py-2 rounded-lg hover:bg-[#0f5fc7] transition duration-300"
         >
-          Volver al Dashboard
+          Volver
         </button>
       </footer>
     </div>

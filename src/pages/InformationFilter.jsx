@@ -27,7 +27,7 @@ export function InformationFilter() {
     "Coordinadora del programa de Ingeniería Civil",
   ];
 
-  const PERIODOS_PERMITIDOS = ["Todos", "1", "2"];
+  const PERIODOS_PERMITIDOS = ["1", "2"];
 
   const SEMESTRE_PERMITIDOS = [
     "Todos",

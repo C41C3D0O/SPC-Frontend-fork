@@ -105,7 +105,7 @@ export function UploadPage() {
           className="bg-[#1572E8] px-4 py-2 rounded-lg text-white hover:bg-[#0f5fc7] transition-all duration-300"
           onClick={() => (window.location.href = '/dashboard')}
         >
-          Volver al Dashboard
+          Volver
         </button>
       </footer>
     </div>
