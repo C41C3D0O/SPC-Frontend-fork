@@ -55,7 +55,7 @@ export function Dashboard() {
               alt="Visualizar proyecciones"
               className="w-20 h-20"
             />
-            <button onClick={() => navigate('/visualizar-proyecciones')} className="bg-[#1572E8] px-6 py-3 rounded-lg text-white font-bold hover:bg-[#0f5fc7] transition-all duration-300">
+            <button onClick={() => navigate('/filtro-de-informacion')} className="bg-[#1572E8] px-6 py-3 rounded-lg text-white font-bold hover:bg-[#0f5fc7] transition-all duration-300">
               Visualizar proyecciones
             </button>
           </div>

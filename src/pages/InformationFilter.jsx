@@ -2,8 +2,11 @@ import React, { useState } from "react";
 import Cookies from "js-cookie";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { useNavigate } from "react-router-dom";
 
 export function InformationFilter() {
+  const navigate = useNavigate();
+  const [selectedTipo, setSelectedTipo] = useState("proyecciones");
   const [selectedPrograma, setSelectedPrograma] = useState("Todos");
   const [selectedAño, setSelectedAño] = useState(null);
   const [selectedPeriodo, setSelectedPeriodo] = useState("Todos");
@@ -11,23 +14,26 @@ export function InformationFilter() {
   const [selectedVersion, setSelectedVersion] = useState("Todos");
   const [selectedCurso, setSelectedCurso] = useState("Todos");
 
-  const PROGRAMAS_PERMITIDOS = [
-    "Todos",
-    "Coordinador Facultad Ciencias Sociales y Humanidades",
-    "Coordinador Programa Licenciatura en Eduación Infantil",
-    "Coordinador Facultad de Ciencias Administrativas Contables y Económicas",
-    "Coordinador Programas Contaduría Pública",
-    "Coordinador Finanzas y Negocios Internacionales",
-    "Coordinador Facultad Ciencias Ambientales y Desarrollo Sostenible",
-    "Coordinadora Programa Ingeniería Electrónica",
-    "Coordinador Programa Ingeniería de Software y Computación",
-    "Coordinación Entrenamiento Deportivo",
-    "Coordinación Gobierno y Relaciones Internacionales",
-    "Coordinador del programa de Ing. Ambiental y Saneamiento",
-    "Coordinadora del programa de Ingeniería Civil",
+  const TIPOS_VISUALIZACION = [
+    { value: "proyecciones", label: "Proyecciones" },
+    { value: "cursos", label: "Cursos" },
+    { value: "comportamiento", label: "Comportamiento" }
   ];
 
-  const PERIODOS_PERMITIDOS = ["1", "2"];
+  const PROGRAMAS_PERMITIDOS = [
+    "Todos",
+    "EDUCACIÓN INFANTIL",
+    "CONTADURÍA PÚBLICA",
+    "FINANZAS Y NEGOCIOS INTERNACIONALES",
+    "INGENIERÍA ELECTRÓNICA",
+    "INGENIERÍA DE SOFTWARE Y COMPUTACIÓN",
+    "ENTRENAMIENTO DEPORTIVO",
+    "GOBIERNO Y RELACIONES INTERNACIONALES",
+    "INGENIERÍA AMBIENTAL Y SANEAMIENTO",
+    "INGENIERÍA CIVIL"
+  ];
+
+  const PERIODOS_PERMITIDOS = ["Todos", "1", "2"];
 
   const SEMESTRE_PERMITIDOS = [
     "Todos",
@@ -39,65 +45,89 @@ export function InformationFilter() {
     "Sexto",
     "Séptimo",
     "Octavo",
-    "Noveno",
-    "Décimo",
+    "Noveno"
   ];
 
-  const VERSION_PERMITIDOS = ["Preliminar", "Final"];
+  const VERSION_PERMITIDOS = ["Todos", "Preliminar", "Final"];
 
   const CURSOS_PERMITIDOS = [
     "Todos",
-    "Análisis Numérico",
-    "Arquitectura de Computadores",
-    "Arquitectura de Sistemas Operativos",
-    "Arquitectura de Software",
-    "Base de Datos Avanzadas",
-    "Base de Datos I",
-    "Calidad del Software I",
-    "Calidad del Software II",
-    "Certificado Actividad Formativa",
-    "Complejidad Algorítmica",
-    "Cálculo I",
-    "Cálculo II",
-    "Desarrollo de Aplicaciones Móviles",
-    "Desarrollo de Aplicaciones Web",
-    "Ecuaciones Diferenciales",
-    "Electiva I (Optativa)",
-    "Electiva II (Optativa)",
-    "Electiva III (Especializada)",
-    "Electiva IV (Especializada)",
-    "Electiva V (Especializada)",
-    "Electiva VI (Especializada)",
-    "Estructura de Datos",
-    "Física I",
-    "Física II",
-    "Gestión de Redes",
-    "Gestión Tecnológica y Financiera",
-    "HCI (Interacción Humano-Computadora)",
-    "Ingeniería del Software I",
-    "Ingeniería del Software II",
-    "Introducción a la Ingeniería",
-    "Introducción a la Programación",
-    "Matemáticas Discretas",
-    "Modelado para la Computación",
-    "Probabilidad Computacional y Estadística",
-    "Práctica Profesional",
-    "Programación I",
-    "Programación II",
-    "Redes de Computadores",
-    "Seguridad Informática",
-    "Sistema de Información Empresarial",
-    "Teoría de la Computación",
-    "Álgebra Lineal",
-    "Álgebra Moderna",
+    "ALGEBRA MODERNA",
+    "INTRODUCCION A LA INGENIERÍA",
+    "INTRODUCCIÓN A LA PROGRAMACIÓN",
+    "CALCULO I",
+    "ALGEBRA LINEAL",
+    "FISICA I",
+    "PROGRAMACION I",
+    "CALCULO II",
+    "MATEMATICAS DISCRETAS",
+    "FISICA II",
+    "ARQUITECTURA DE COMPUTADORES",
+    "PROGRAMACION II",
+    "ECUACIONES DIFERENCIALES",
+    "BASE DE DATOS I",
+    "ESTRUCTURA DE DATOS",
+    "INGENIERIA DEL SOFTWARE I",
+    "PROBABILIDAD COMPUTACIONAL Y ESTADISTICA",
+    "BASE DE DATOS II",
+    "COMPLEJIDAD ALGORITMICA",
+    "DESARROLLO APLICACIONES WEB",
+    "INGENIERIA DEL SOFTWARE II",
+    "ANALISIS NUMÉRICO",
+    "ARQUITECTURA DE SISTEMAS OPERATIVOS",
+    "BASE DE DATOS AVANZADAS",
+    "TEORIA DE LA COMPUTACION",
+    "DESARROLLO DE APLICACIONES MÓVILES",
+    "CALIDAD DEL SOFTWARE I",
+    "MODELADO PARA LA COMPUTACIÓN",
+    "REDES DE COMPUTADORES",
+    "SEGURIDAD INFORMATICA",
+    "ARQUITECTURA DE SOFTWARE",
+    "CALIDAD DE SOFTWARE II",
+    "GESTIÓN DE REDES",
+    "SISTEMA DE INFORMACIÓN EMPRESARIAL",
+    "ELECTIVA I (Optativa)",
+    "ELECTIVA III (Especializada)",
+    "ELECTIVA V (Especizalizada)",
+    "HCI",
+    "PRACTICA PROFESIONAL",
+    "GESTIÓN TECNOLÓGICA Y FINANCIERA",
+    "ELECTIVA II (Optativa)",
+    "ELECTIVA IV (Especializada)",
+    "ELECTIVA VI (Especializada)",
+    "96 HORAS SEMINARIOS DE ACTUALIZACION",
+    "CERT ACTIVIDAD DEP FORMATIVO"
   ];
 
   const user = Cookies.get("user") ? JSON.parse(Cookies.get("user")) : null;
 
-  const handleProyeccionClick = () => {
+  const handleVisualizarClick = () => {
+    const filters = {
+      tipo: selectedTipo,
+      programa: selectedPrograma === "Todos" ? "" : selectedPrograma,
+      año: selectedAño ? selectedAño.getFullYear().toString() : "",
+      periodo: selectedPeriodo === "Todos" ? "" : selectedPeriodo,
+      semestre: selectedSemestre === "Todos" ? "" : selectedSemestre,
+      version: selectedVersion === "Todos" ? "" : selectedVersion,
+      curso: selectedCurso === "Todos" ? "" : selectedCurso
+    };
     
-    console.log("Visualizando proyección con los filtros seleccionados...");
+    navigate("/visualizar-proyecciones", { state: { filters } });
   };
+
+  const isFiltrosDisabled = selectedTipo !== "proyecciones";
+  const opacityClass = isFiltrosDisabled ? "opacity-50" : "opacity-100";
+
+  function rolnavigation() {
+    const userRol = Cookies.get("userRol");
+    if (userRol === "Coordinador") {
+      navigate("/dashboard-coordinador");
+    } else if (userRol === "Vicerrector") {
+      navigate("/dashboard-vicerrector");
+    } else {
+      navigate("/dashboard");
+    }
+  }
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -119,119 +149,144 @@ export function InformationFilter() {
       {/* Content */}
       <div className="flex-grow flex items-center justify-center">
         <div className="bg-[#d7e9ff] w-full max-w-4xl mx-auto px-10 py-16 mt-16 mb-16 rounded-lg shadow-md">
-          {/* Programa */}
-          <div className="mb-4">
-            <label className="block mb-2 font-semibold">Programa</label>
+          {/* Tipo de Visualización */}
+          <div className="mb-6">
+            <label className="block mb-2 font-semibold">Tipo de Visualización</label>
             <select
               className="bg-gray-100 p-3 rounded-lg block w-full"
-              value={selectedPrograma}
-              onChange={(e) => setSelectedPrograma(e.target.value)}
+              value={selectedTipo}
+              onChange={(e) => setSelectedTipo(e.target.value)}
             >
-              {PROGRAMAS_PERMITIDOS.map((programa) => (
-                <option key={programa} value={programa}>
-                  {programa}
+              {TIPOS_VISUALIZACION.map((tipo) => (
+                <option key={tipo.value} value={tipo.value}>
+                  {tipo.label}
                 </option>
               ))}
             </select>
           </div>
 
-          {/* Año */}
-          <div className="mb-4">
-            <label className="block mb-2 font-semibold">Año</label>
-            <DatePicker
-              selected={selectedAño}
-              onChange={(date) => setSelectedAño(date)}
-              showYearPicker
-              dateFormat="yyyy"
-              className="bg-gray-100 p-3 rounded-lg block w-full"
-              placeholderText="Seleccione un año"
-            />
+          {/* Filtros (solo habilitados para proyecciones) */}
+          <div className={opacityClass}>
+            {/* Programa */}
+            <div className="mb-4">
+              <label className="block mb-2 font-semibold">Programa</label>
+              <select
+                className="bg-gray-100 p-3 rounded-lg block w-full"
+                value={selectedPrograma}
+                onChange={(e) => setSelectedPrograma(e.target.value)}
+                disabled={isFiltrosDisabled}
+              >
+                {PROGRAMAS_PERMITIDOS.map((programa) => (
+                  <option key={programa} value={programa}>
+                    {programa}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            {/* Año */}
+            <div className="mb-4">
+              <label className="block mb-2 font-semibold">Año</label>
+              <DatePicker
+                selected={selectedAño}
+                onChange={(date) => setSelectedAño(date)}
+                showYearPicker
+                dateFormat="yyyy"
+                className="bg-gray-100 p-3 rounded-lg block w-full"
+                placeholderText="Seleccione un año"
+                disabled={isFiltrosDisabled}
+              />
+            </div>
+
+            {/* Periodo */}
+            <div className="mb-4">
+              <label className="block mb-2 font-semibold">Periodo</label>
+              <select
+                className="bg-gray-100 p-3 rounded-lg block w-full"
+                value={selectedPeriodo}
+                onChange={(e) => setSelectedPeriodo(e.target.value)}
+                disabled={isFiltrosDisabled}
+              >
+                {PERIODOS_PERMITIDOS.map((periodo) => (
+                  <option key={periodo} value={periodo}>
+                    {periodo}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            {/* Semestre */}
+            <div className="mb-4">
+              <label className="block mb-2 font-semibold">Semestre</label>
+              <select
+                className="bg-gray-100 p-3 rounded-lg block w-full"
+                value={selectedSemestre}
+                onChange={(e) => setSelectedSemestre(e.target.value)}
+                disabled={isFiltrosDisabled}
+              >
+                {SEMESTRE_PERMITIDOS.map((semestre) => (
+                  <option key={semestre} value={semestre}>
+                    {semestre}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            {/* Versión */}
+            <div className="mb-4">
+              <label className="block mb-2 font-semibold">Versión</label>
+              <select
+                className="bg-gray-100 p-3 rounded-lg block w-full"
+                value={selectedVersion}
+                onChange={(e) => setSelectedVersion(e.target.value)}
+                disabled={isFiltrosDisabled}
+              >
+                {VERSION_PERMITIDOS.map((version) => (
+                  <option key={version} value={version}>
+                    {version}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            {/* Curso */}
+            <div>
+              <label className="block mb-2 font-semibold">Curso</label>
+              <select
+                className="bg-gray-100 p-3 rounded-lg block w-full"
+                value={selectedCurso}
+                onChange={(e) => setSelectedCurso(e.target.value)}
+                disabled={isFiltrosDisabled}
+              >
+                {CURSOS_PERMITIDOS.map((curso) => (
+                  <option key={curso} value={curso}>
+                    {curso}
+                  </option>
+                ))}
+              </select>
+            </div>
           </div>
 
-          
-          {/* Periodo */}
-          <div className="mb-4">
-            <label className="block mb-2 font-semibold">Periodo</label>
-            <select
-              className="bg-gray-100 p-3 rounded-lg block w-full"
-              value={selectedPeriodo}
-              onChange={(e) => setSelectedPeriodo(e.target.value)}
-            >
-              {PERIODOS_PERMITIDOS.map((periodo) => (
-                <option key={periodo} value={periodo}>
-                  {periodo}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          {/* Semestre */}
-          <div className="mb-4">
-            <label className="block mb-2 font-semibold">Semestre</label>
-            <select
-              className="bg-gray-100 p-3 rounded-lg block w-full"
-              value={selectedSemestre}
-              onChange={(e) => setSelectedSemestre(e.target.value)}
-            >
-              {SEMESTRE_PERMITIDOS.map((semestre) => (
-                <option key={semestre} value={semestre}>
-                  {semestre}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          {/* Versión */}
-          <div className="mb-4">
-            <label className="block mb-2 font-semibold">Versión</label>
-            <select
-              className="bg-gray-100 p-3 rounded-lg block w-full"
-              value={selectedVersion}
-              onChange={(e) => setSelectedVersion(e.target.value)}
-            >
-              {VERSION_PERMITIDOS.map((version) => (
-                <option key={version} value={version}>
-                  {version}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          {/* Curso */}
-          <div>
-            <label className="block mb-2 font-semibold">Curso</label>
-            <select
-              className="bg-gray-100 p-3 rounded-lg block w-full"
-              value={selectedCurso}
-              onChange={(e) => setSelectedCurso(e.target.value)}
-            >
-              {CURSOS_PERMITIDOS.map((curso) => (
-                <option key={curso} value={curso}>
-                  {curso}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          {/* Botón Visualizar Proyección */}
+          {/* Botón Visualizar */}
           <div className="mt-8 text-center">
             <button
-              onClick={handleProyeccionClick}
+              onClick={handleVisualizarClick}
               className="bg-[#1572E8] text-white py-3 px-6 rounded-lg font-semibold"
             >
-              Visualizar Proyección
+              Visualizar
             </button>
           </div>
         </div>
       </div>
 
       <footer className="bg-gradient-to-r from-[#00498B] to-[#001325] text-white py-4 px-8 text-xl font-bold flex justify-end">
-        
-        <button className="bg-[#1572E8] px-3 py-2 rounded-lg text-white hover:bg-[#0f5fc7] transition-all duration-300">
+        <button
+          onClick={rolnavigation}
+          className="bg-[#1572E8] px-4 py-2 rounded-lg hover:bg-[#0f5fc7] transition duration-300"
+        >
           Volver
         </button>
-      
-    </footer>
+      </footer>
     </div>
   );
 }

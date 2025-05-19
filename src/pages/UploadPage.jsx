@@ -13,7 +13,7 @@ export function UploadPage() {
 
   // modal de proyección
   const [modalOpen, setModalOpen] = useState(false);
-  const [anio, setAnio]       = useState(new Date().getFullYear());
+  const [anio, setAnio] = useState(new Date().getFullYear());
   const [periodo, setPeriodo] = useState(1);
 
   // usuario autenticado
@@ -27,7 +27,7 @@ export function UploadPage() {
   const handleFile = async (e, type) => {
     const file = e.target.files[0];
     if (!file) return;
-    setLoading(l => ({ ...l, [type]: true }));
+    setLoading((l) => ({ ...l, [type]: true }));
     const form = new FormData();
     form.append('file', file);
     try {
@@ -35,11 +35,11 @@ export function UploadPage() {
         headers: { 'Content-Type': 'multipart/form-data' },
       });
       toast.success(`Archivo ${type.toUpperCase()} cargado`);
-      setStatus(s => ({ ...s, [type]: true }));
+      setStatus((s) => ({ ...s, [type]: true }));
     } catch (err) {
       toast.error(err.response?.data?.error || 'Error al subir');
     } finally {
-      setLoading(l => ({ ...l, [type]: false }));
+      setLoading((l) => ({ ...l, [type]: false }));
     }
   };
 
@@ -79,14 +79,14 @@ export function UploadPage() {
         </div>
       </div>
 
-      {/* Contenido principal */}
+      {/* Contenido principal label*/}
       <div className="flex-grow flex flex-col items-center justify-center py-12">
         <div className="bg-white w-full max-w-xl p-8 rounded-lg shadow-xl">
           <h2 className="text-xl font-bold mb-6 text-[#00498B]">Sube tus archivos:</h2>
           {['a', 'b'].map((type) => (
             <div key={type} className="mb-6">
               <label className="block mb-2 font-semibold text-gray-700">
-                Archivo {type.toUpperCase()}:
+                {type === 'a' ? 'Cargar archivos de cursos:' : 'Cargar archivos de comportamiento:'}
               </label>
               <input
                 type="file"
@@ -111,11 +111,11 @@ export function UploadPage() {
               Realizar Proyección Preliminar
             </button>
             <button
-            onClick={openFinal}
-            className="w-full bg-[#1572E8] text-white py-2 rounded-lg hover:bg-[#0f5fc7] transition-all duration-300"
-          >
-            Realizar Proyección Final
-          </button>
+              onClick={openFinal}
+              className="w-full bg-[#1572E8] text-white py-2 rounded-lg hover:bg-[#0f5fc7] transition-all duration-300"
+            >
+              Realizar Proyección Final
+            </button>
           </div>
         </div>
       </div>
@@ -133,14 +133,14 @@ export function UploadPage() {
         <input
           type="number"
           value={anio}
-          onChange={e => setAnio(+e.target.value)}
+          onChange={(e) => setAnio(+e.target.value)}
           className="w-full p-2 mb-4 border rounded"
         />
 
         <label>Periodo:</label>
         <select
           value={periodo}
-          onChange={e => setPeriodo(+e.target.value)}
+          onChange={(e) => setPeriodo(+e.target.value)}
           className="w-full p-2 mb-4 border rounded"
         >
           <option value={1}>1</option>

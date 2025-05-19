@@ -8,6 +8,7 @@ import { PublicLayout } from "./components/PublicLayout";
 import { AuthLayout } from "./components/AuthLayout";
 
 // Páginas
+
 import { Login } from "./pages/Login";
 import { Dashboard } from "./pages/Dashboard";
 import { ListaUsuarios } from "./pages/ListaUsuarios";
@@ -18,7 +19,7 @@ import { DashboardVicerrector } from "./pages/DashboardVicerrector";
 import { UpdatePassword } from "./pages/UpdatePassword";
 import { UploadPage } from "./pages/UploadPage";
 import { VisualizarProyecciones } from "./pages/VisualizarProyecciones";
-import {InformationFilter} from "./pages/InformationFilter"
+import {InformationFilter} from "./pages/InformationFilter";
 
 const isAuthenticated = () => !!Cookies.get("token");
 
@@ -36,6 +37,7 @@ function App() {
 
         
           <Route path="/filtro-de-informacion" element={<InformationFilter />} />
+          
         
 
         {/* Rutas públicas */}
