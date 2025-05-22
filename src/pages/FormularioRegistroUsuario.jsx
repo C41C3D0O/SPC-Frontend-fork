@@ -13,18 +13,15 @@ import { toast } from "react-hot-toast";
 import { Link } from "react-router-dom";
 
 const PROGRAMAS_PERMITIDOS = [
-  "Coordinador Facultad Ciencias Sociales y Humanidades",
-  "Coordinador Programa Licenciatura en Eduación Infantil",
-  "Coordinador Facultad de Ciencias Administrativas Contables y Económicas",
-  "Coordinador Programas Contaduría Pública",
-  "Coordinador Finanzas y Negocios Internacionales",
-  "Coordinador Facultad Ciencias Ambientales y Desarrollo Sostenible",
-  "Coordinadora Programa Ingeniería Electrónica",
-  "Coordinador Programa Ingeniería de Software y Computación",
-  "Coordinación Entrenamiento Deportivo",
-  "Coordinación Gobierno y Relaciones Internacionales",
-  "Coordinador del programa de Ing. Ambiental y Saneamiento",
-  "Coordinadora del programa de Ingeniería Civil",
+    "EDUCACIÓN INFANTIL",
+    "CONTADURÍA PÚBLICA",
+    "FINANZAS Y NEGOCIOS INTERNACIONALES",
+    "INGENIERÍA ELECTRÓNICA",
+    "INGENIERÍA DE SOFTWARE Y COMPUTACIÓN",
+    "ENTRENAMIENTO DEPORTIVO",
+    "GOBIERNO Y RELACIONES INTERNACIONALES",
+    "INGENIERÍA AMBIENTAL Y SANEAMIENTO",
+    "INGENIERÍA CIVIL"
 ];
 
 export function FormularioRegistroUsuarios() {

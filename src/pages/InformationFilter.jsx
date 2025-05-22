@@ -3,6 +3,7 @@ import Cookies from "js-cookie";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { useNavigate } from "react-router-dom";
+import { FilterPopup } from "../components/FilterPopup";
 
 export function InformationFilter() {
   const navigate = useNavigate();
@@ -13,6 +14,9 @@ export function InformationFilter() {
   const [selectedSemestre, setSelectedSemestre] = useState("Todos");
   const [selectedVersion, setSelectedVersion] = useState("Todos");
   const [selectedCurso, setSelectedCurso] = useState("Todos");
+
+  // Estado nuevo para controlar popup
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
 
   const TIPOS_VISUALIZACION = [
     { value: "proyecciones", label: "Proyecciones" },
@@ -111,8 +115,19 @@ export function InformationFilter() {
       version: selectedVersion === "Todos" ? "" : selectedVersion,
       curso: selectedCurso === "Todos" ? "" : selectedCurso
     };
-    
+
     navigate("/visualizar-proyecciones", { state: { filters } });
+  };
+
+  // Nueva función para abrir el popup
+  const handleDownloadClick = () => {
+    setIsPopupOpen(true);
+  };
+
+  // Función que recibe filtros del popup y abre url para descargar
+  const handleDownload = (filters) => {
+    const query = new URLSearchParams(filters).toString();
+    window.open(`/proyeccion/exportar-proyecciones?${query}`, "_blank");
   };
 
   const isFiltrosDisabled = selectedTipo !== "proyecciones";
@@ -250,7 +265,7 @@ export function InformationFilter() {
             </div>
 
             {/* Curso */}
-            <div>
+            <div className="mb-6">
               <label className="block mb-2 font-semibold">Curso</label>
               <select
                 className="bg-gray-100 p-3 rounded-lg block w-full"
@@ -267,18 +282,32 @@ export function InformationFilter() {
             </div>
           </div>
 
-          {/* Botón Visualizar */}
-          <div className="mt-8 text-center">
+          {/* Botones Visualizar y Descargar */}
+          <div className="mt-8 text-center flex justify-center space-x-4">
             <button
               onClick={handleVisualizarClick}
               className="bg-[#1572E8] text-white py-3 px-6 rounded-lg font-semibold"
             >
               Visualizar
             </button>
+            <button
+              onClick={handleDownloadClick}
+              className="bg-[#1572E8] text-white py-3 px-6 rounded-lg font-semibold"
+            >
+              Descargar
+            </button>
           </div>
         </div>
       </div>
 
+      {/* Popup de filtros para descarga */}
+      <FilterPopup
+        isOpen={isPopupOpen}
+        onClose={() => setIsPopupOpen(false)}
+        onDownload={handleDownload}
+      />
+
+      {/* Footer */}
       <footer className="bg-gradient-to-r from-[#00498B] to-[#001325] text-white py-4 px-8 text-xl font-bold flex justify-end">
         <button
           onClick={rolnavigation}
