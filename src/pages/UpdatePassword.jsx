@@ -8,22 +8,7 @@ import {
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-hot-toast";
 
-
 export function UpdatePassword() {
-
- 
-    function rolnavigation(){
-      const userRol = Cookies.get("userRol");
-    if (userRol === "Coordinador") {
-      navigate("/dashboard-coordinador");
-    } else if (userRol === "Vicerrector") {
-      navigate("/dashboard-vicerrector");
-    } else {
-      navigate("/login");
-    }
-    }
-  
-
   const {
     register,
     handleSubmit,
@@ -34,12 +19,21 @@ export function UpdatePassword() {
   const navigate = useNavigate();
   const params = useParams();
 
-  // Obtener las contraseñas
   const nuevaPassword = watch("password");
   const confirmarPassword = watch("confirmarPassword");
 
+  async function rolnavigation() {
+    const userRol = Cookies.get("userRol");
+    if (userRol === "Coordinador") {
+      navigate("/dashboard-coordinador");
+    } else if (userRol === "Vicerrector") {
+      navigate("/dashboard-vicerrector");
+    } else {
+      navigate("/login");
+    }
+  }
+
   const onSubmit = handleSubmit(async (data) => {
-    // Validación de que las contraseñas coincidan
     if (nuevaPassword !== confirmarPassword) {
       toast.error("Las contraseñas no coinciden", {
         position: "top-right",
@@ -57,8 +51,8 @@ export function UpdatePassword() {
           color: "#fff",
         },
       });
+      rolnavigation(); // Navega solo si las condiciones son válidas
     }
-    
   });
 
   useEffect(() => {
@@ -76,11 +70,11 @@ export function UpdatePassword() {
     }
     loadUsuarios();
   }, []);
+
   const user = Cookies.get("user") ? JSON.parse(Cookies.get("user")) : null;
 
   return (
     <div className="min-h-screen flex flex-col">
-      {/* Header */}
       <div className="flex w-full">
         <div className="bg-[#1572E8] text-white py-4 px-4 text-xl font-bold w-1/5 flex items-center space-x-4">
           <div>
@@ -96,11 +90,9 @@ export function UpdatePassword() {
         </div>
       </div>
 
-      {/* Contenido principal */}
       <div className="flex-grow flex items-center justify-center">
         <div className="bg-[#d7e9ff] w-full max-w-4xl mx-auto px-10 py-16 mt-16 mb-16 rounded-lg shadow-md">
           <form onSubmit={onSubmit}>
-            {/* Nueva Contraseña */}
             <input
               type="password"
               placeholder="Nueva Contraseña"
@@ -114,13 +106,13 @@ export function UpdatePassword() {
               <span className="text-red-500">{errors.password.message}</span>
             )}
 
-            {/* Confirmar Contraseña */}
             <input
               type="password"
               placeholder="Confirmar Contraseña"
               {...register("confirmarPassword", {
                 required: "Debes confirmar la nueva contraseña",
-                validate: (value) => value === nuevaPassword || "Las contraseñas no coinciden",
+                validate: (value) =>
+                  value === nuevaPassword || "Las contraseñas no coinciden",
               })}
               className="bg-white p-3 rounded-lg block w-full mb-3"
             />
@@ -129,8 +121,10 @@ export function UpdatePassword() {
             )}
 
             <div className="flex justify-end m-2">
-                
-              <button onClick={rolnavigation} className="bg-[#1572E8] px-4 py-2 rounded-lg text-white hover:bg-[#0f5fc7] transition-all duration-300">
+              <button
+                type="submit"
+                className="bg-[#1572E8] px-4 py-2 rounded-lg text-white hover:bg-[#0f5fc7] transition-all duration-300"
+              >
                 Guardar
               </button>
             </div>
@@ -138,11 +132,11 @@ export function UpdatePassword() {
         </div>
       </div>
 
-      {/* Footer */}
       <footer className="bg-gradient-to-r from-[#00498B] to-[#001325] text-white py-4 px-8 flex justify-end">
         <button
           onClick={rolnavigation}
-          className="bg-[#1572E8] px-4 py-2 rounded-lg text-white hover:bg-[#0f5fc7] transition-all duration-300">
+          className="bg-[#1572E8] px-4 py-2 rounded-lg text-white hover:bg-[#0f5fc7] transition-all duration-300"
+        >
           Volver
         </button>
       </footer>
