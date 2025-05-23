@@ -20,6 +20,7 @@ import { UpdatePassword } from "./pages/UpdatePassword";
 import { UploadPage } from "./pages/UploadPage";
 import { VisualizarProyecciones } from "./pages/VisualizarProyecciones";
 import {InformationFilter} from "./pages/InformationFilter";
+import { ValidacionDatos } from "./components/ValidacionDatos";
 
 const isAuthenticated = () => !!Cookies.get("token");
 

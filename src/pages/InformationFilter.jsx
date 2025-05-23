@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Cookies from "js-cookie";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { useNavigate } from "react-router-dom";
 import { FilterPopup } from "../components/FilterPopup";
+import { ValidacionDatos } from "../components/ValidacionDatos";
 
 export function InformationFilter() {
   const navigate = useNavigate();
@@ -14,9 +15,9 @@ export function InformationFilter() {
   const [selectedSemestre, setSelectedSemestre] = useState("Todos");
   const [selectedVersion, setSelectedVersion] = useState("Todos");
   const [selectedCurso, setSelectedCurso] = useState("Todos");
-
-  // Estado nuevo para controlar popup
   const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [userRol, setUserRol] = useState(Cookies.get("userRol"));
+  const [programaCoordinador, setProgramaCoordinador] = useState(null);
 
   const TIPOS_VISUALIZACION = [
     { value: "proyecciones", label: "Proyecciones" },
@@ -103,6 +104,29 @@ export function InformationFilter() {
     "CERT ACTIVIDAD DEP FORMATIVO"
   ];
 
+  // Mapeo de IDs de programa a nombres
+  const programasIdMap = {
+    1: "CONTADURÍA PÚBLICA",
+    2: "FINANZAS Y NEGOCIOS INTERNACIONALES",
+    3: "CIENCIAS AMBIENTALES Y DESARROLLO SOSTENIBLE",
+    4: "INGENIERÍA ELECTRÓNICA",
+    5: "INGENIERÍA DE SOFTWARE Y COMPUTACIÓN",
+    6: "ENTRENAMIENTO DEPORTIVO",
+    7: "GOBIERNO Y RELACIONES INTERNACIONALES",
+    8: "INGENIERÍA AMBIENTAL Y SANEAMIENTO",
+    9: "INGENIERÍA CIVIL"
+  };
+
+  // Efecto para actualizar el programa seleccionado cuando se recibe el ID del coordinador
+  useEffect(() => {
+    if (programaCoordinador && userRol === "Coordinador") {
+      const programaNombre = programasIdMap[programaCoordinador];
+      if (programaNombre) {
+        setSelectedPrograma(programaNombre);
+      }
+    }
+  }, [programaCoordinador, userRol]);
+
   const user = Cookies.get("user") ? JSON.parse(Cookies.get("user")) : null;
 
   const handleVisualizarClick = () => {
@@ -119,12 +143,10 @@ export function InformationFilter() {
     navigate("/visualizar-proyecciones", { state: { filters } });
   };
 
-  // Nueva función para abrir el popup
   const handleDownloadClick = () => {
     setIsPopupOpen(true);
   };
 
-  // Función que recibe filtros del popup y abre url para descargar
   const handleDownload = (filters) => {
     const query = new URLSearchParams(filters).toString();
     window.open(`/proyeccion/exportar-proyecciones?${query}`, "_blank");
@@ -146,6 +168,9 @@ export function InformationFilter() {
 
   return (
     <div className="min-h-screen flex flex-col">
+      {/* Componente ValidacionDatos (invisible) */}
+      <ValidacionDatos onDatosRecibidos={setProgramaCoordinador} />
+      
       {/* Header */}
       <div className="flex w-full">
         <div className="bg-[#1572E8] text-white py-4 px-4 text-xl font-bold w-1/5 flex items-center space-x-4">
@@ -189,7 +214,7 @@ export function InformationFilter() {
                 className="bg-gray-100 p-3 rounded-lg block w-full"
                 value={selectedPrograma}
                 onChange={(e) => setSelectedPrograma(e.target.value)}
-                disabled={isFiltrosDisabled}
+                disabled={isFiltrosDisabled || userRol === "Coordinador"}
               >
                 {PROGRAMAS_PERMITIDOS.map((programa) => (
                   <option key={programa} value={programa}>

@@ -1,12 +1,30 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import Cookies from "js-cookie";
+import { toast } from "react-hot-toast";
+import { ValidacionDatos } from "./ValidacionDatos";
 
 export function FilterPopup({ isOpen, onClose }) {
   const [selectedPrograma, setSelectedPrograma] = useState("Todos");
   const [selectedAño, setSelectedAño] = useState(null);
   const [selectedPeriodo, setSelectedPeriodo] = useState("Todos");
   const [selectedVersion, setSelectedVersion] = useState("Todos");
+  const [programaCoordinadorId, setProgramaCoordinadorId] = useState(null);
+  const userRol = Cookies.get("userRol");
+
+  // Mapeo de IDs de programa a nombres
+  const programasIdMap = {
+    1: "CONTADURIA PUBLICA",
+    2: "FINANZAS Y NEGOCIOS INTERNACIONALES",
+    3: "CIENCIAS AMBIENTALES Y DESARROLLO SOSTENIBLE",
+    4: "INGENIERIA ELECTRONICA",
+    5: "INGENIERIA DE SOFTWARE Y COMPUTACION",
+    6: "ENTRENAMIENTO DEPORTIVO",
+    7: "GOBIERNO Y RELACIONES INTERNACIONALES",
+    8: "INGENIERIA AMBIENTAL Y SANEAMIENTO",
+    9: "INGENIERIA CIVIL"
+  };
 
   const PROGRAMAS_PERMITIDOS = [
     "Todos",
@@ -24,8 +42,17 @@ export function FilterPopup({ isOpen, onClose }) {
   const PERIODOS_PERMITIDOS = ["Todos", "1", "2"];
   const VERSION_PERMITIDOS = ["Todos", "Preliminar", "Final"];
 
+  // Auto-seleccionar programa para coordinadores
+  useEffect(() => {
+    if (programaCoordinadorId && userRol === "Coordinador") {
+      const programaNombre = programasIdMap[programaCoordinadorId];
+      if (programaNombre) {
+        setSelectedPrograma(programaNombre);
+      }
+    }
+  }, [programaCoordinadorId, userRol]);
+
   const downloadCSV = async (filters) => {
-    // Construir los parámetros de la URL
     const params = new URLSearchParams();
     
     if (filters.programa) params.append('programa', filters.programa);
@@ -41,7 +68,6 @@ export function FilterPopup({ isOpen, onClose }) {
         throw new Error(errorText || 'Error al descargar el archivo');
       }
       
-      // Crear un blob con la respuesta y descargarlo
       const blob = await response.blob();
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement('a');
@@ -54,7 +80,7 @@ export function FilterPopup({ isOpen, onClose }) {
       
     } catch (error) {
       console.error('Error al descargar:', error);
-      alert(error.message);
+      toast.error(error.message);
     }
   };
 
@@ -74,8 +100,11 @@ export function FilterPopup({ isOpen, onClose }) {
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+      {/* Componente ValidacionDatos (invisible) */}
+      <ValidacionDatos onDatosRecibidos={setProgramaCoordinadorId} />
+      
       <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
-        <h2 className="text-xl font-semibold mb-4">Filtrar para Descargar</h2>
+        <h2 className="text-xl font-semibold mb-4">Filtrar para Descargar Proyección</h2>
         
         {/* Programa */}
         <div className="mb-4">
@@ -84,6 +113,7 @@ export function FilterPopup({ isOpen, onClose }) {
             className="bg-gray-100 p-3 rounded-lg block w-full"
             value={selectedPrograma}
             onChange={(e) => setSelectedPrograma(e.target.value)}
+            disabled={userRol === "Coordinador"}
           >
             {PROGRAMAS_PERMITIDOS.map((programa) => (
               <option key={programa} value={programa}>
@@ -91,6 +121,11 @@ export function FilterPopup({ isOpen, onClose }) {
               </option>
             ))}
           </select>
+          {userRol === "Coordinador" && (
+            <p className="text-sm text-gray-500 mt-1">
+              * Como coordinador, solo puedes descargar datos de tu programa
+            </p>
+          )}
         </div>
 
         {/* Año */}
@@ -141,13 +176,13 @@ export function FilterPopup({ isOpen, onClose }) {
         <div className="flex justify-end space-x-4">
           <button
             onClick={onClose}
-            className="bg-gray-300 text-black py-2 px-4 rounded-lg"
+            className="bg-gray-300 text-black py-2 px-4 rounded-lg hover:bg-gray-400 transition"
           >
             Cancelar
           </button>
           <button
             onClick={handleDownload}
-            className="bg-blue-600 text-white py-2 px-4 rounded-lg"
+            className="bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition"
           >
             Descargar
           </button>
