@@ -1,14 +1,37 @@
-import { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import Cookies from "js-cookie";
-import {
-  updateUsuarios,
-  getUsuarios,
-} from "../api/registroUsuarios.api";
+import { updateUsuarios, getUsuarios } from "../api/registroUsuarios.api";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-hot-toast";
+import { Menu } from "../components/Menu";
+import menuIcon from "../assets/menu.png";
 
 export function UpdatePassword() {
+
+  function rolnavigation() {
+      const userRol = Cookies.get("userRol");
+      if (userRol === "Coordinador") {
+        navigate("/dashboard-coordinador");
+      } else if (userRol === "Vicerrector") {
+        navigate("/dashboard-vicerrector");
+      } else {
+        navigate("/dashboard");
+      }
+    }
+
+    function BlueButton({ children, onClick, type = "button", className = "" }) {
+      return (
+        <button
+          type={type}
+          onClick={onClick}
+          className={`bg-[#1572E8] hover:bg-[#0f5fc7] text-white font-semibold py-2 px-4 rounded transition-colors duration-300 ${className}`}
+        >
+          {children}
+        </button>
+      );
+    }
+
   const {
     register,
     handleSubmit,
@@ -22,16 +45,6 @@ export function UpdatePassword() {
   const nuevaPassword = watch("password");
   const confirmarPassword = watch("confirmarPassword");
 
-  async function rolnavigation() {
-    const userRol = Cookies.get("userRol");
-    if (userRol === "Coordinador") {
-      navigate("/dashboard-coordinador");
-    } else if (userRol === "Vicerrector") {
-      navigate("/dashboard-vicerrector");
-    } else {
-      navigate("/login");
-    }
-  }
 
   const onSubmit = handleSubmit(async (data) => {
     if (nuevaPassword !== confirmarPassword) {
@@ -51,7 +64,7 @@ export function UpdatePassword() {
           color: "#fff",
         },
       });
-      rolnavigation(); // Navega solo si las condiciones son válidas
+      rolnavigation();
     }
   });
 
@@ -73,73 +86,114 @@ export function UpdatePassword() {
 
   const user = Cookies.get("user") ? JSON.parse(Cookies.get("user")) : null;
 
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen); // Cambia el estado del menú
+  };
+
   return (
-    <div className="min-h-screen flex flex-col">
-      <div className="flex w-full">
-        <div className="bg-[#1572E8] text-white py-4 px-4 text-xl font-bold w-1/5 flex items-center space-x-4">
-          <div>
-            <h1 className="text-xl font-bold mb-4">
-              {user && user.nombre ? user.nombre : "Desconocido"}
-            </h1>
-            <p className="text-base">{user ? user.rol : "Desconocido"}</p>
+    <div className="min-h-screen flex flex-col bg-gradient-to-b from-[#d7e9ff] to-[#ffffff]">
+      {/* Header fijo */}
+      <header className="fixed top-0 left-0 right-0 z-50">
+        <div className="flex w-full">
+          {/* Sección de usuario */}
+          <div className="bg-[#1572E8] text-white py-4 px-4 text-xl font-bold w-1/5 flex items-center space-x-4">
+            
+            <div>
+              <img
+                src={menuIcon}
+                alt="Menu"
+                className="w-8 h-8 ml-5 mr-3"
+                onClick={toggleMenu}
+              />
+            </div>
+            
+            <div>
+              <h1 className="text-xl font-bold mb-4">
+                {user?.nombre || 'Desconocido'}
+              </h1>
+              <p className="text-lg">{user?.rol || 'Desconocido'}</p>
+            </div>
+          </div>
+
+          {/* Sección de título */}
+          <div className="bg-gradient-to-r from-[#00498B] to-[#001325] text-white py-8 px-8 text-xl font-bold w-4/5 flex justify-between items-center">
+            <h1 className="text-xl font-semibold">ACTUALIZAR CONTRASEÑA</h1>
+            <BlueButton onClick={rolnavigation}>Inicio</BlueButton>
           </div>
         </div>
+      </header>
 
-        <div className="bg-gradient-to-r from-[#00498B] to-[#001325] text-white py-8 px-8 text-xl font-bold w-4/5 flex justify-start items-center">
-          <h1 className="text-xl font-semibold">ACTUALIZACIÓN DE CONTRASEÑA</h1>
-        </div>
-      </div>
+      {/* Popup del menú */}
+      {isMenuOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+          <div className="bg-white rounded-xl shadow-lg p-6 w-auto font-bold relative">
+            <button
+              className="text-xl text-blue-700 absolute top-4 right-4 hover:text-gray-900 font-bold"
+              onClick={toggleMenu}
+            >
+              X
+            </button>
+            <Menu /> {/* Renderizar el componente del menú */}
+          </div>
+        </div>)}
 
-      <div className="flex-grow flex items-center justify-center">
-        <div className="bg-[#d7e9ff] w-full max-w-4xl mx-auto px-10 py-16 mt-16 mb-16 rounded-lg shadow-md">
-          <form onSubmit={onSubmit}>
+      <main className="flex flex-1 justify-center items-center">
+        <form
+          onSubmit={onSubmit}
+          className="bg-white p-10 rounded-lg shadow-lg w-full max-w-md"
+        >
+          <h2 className="text-xl font-bold text-[#00498B] mb-6">
+            Cambiar Contraseña
+          </h2>
+          <div className="mb-4">
+            <label className="block font-semibold text-gray-700 mb-2">
+              Nueva Contraseña
+            </label>
             <input
               type="password"
-              placeholder="Nueva Contraseña"
-              {...register("password", {
-                required: "La nueva contraseña es requerida",
-                minLength: { value: 6, message: "Mínimo 6 caracteres" },
-              })}
-              className="bg-white p-3 rounded-lg block w-full mb-3"
+              {...register("password", { required: true })}
+              className="block w-full p-3 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:outline-none focus:ring-2 focus:ring-[#1572E8] focus:border-transparent"
             />
             {errors.password && (
-              <span className="text-red-500">{errors.password.message}</span>
+              <span className="text-red-500 text-sm">
+                Este campo es obligatorio.
+              </span>
             )}
-
+          </div>
+          <div className="mb-4">
+            <label className="block font-semibold text-gray-700 mb-2">
+              Confirmar Contraseña
+            </label>
             <input
               type="password"
-              placeholder="Confirmar Contraseña"
-              {...register("confirmarPassword", {
-                required: "Debes confirmar la nueva contraseña",
-                validate: (value) =>
-                  value === nuevaPassword || "Las contraseñas no coinciden",
-              })}
-              className="bg-white p-3 rounded-lg block w-full mb-3"
+              {...register("confirmarPassword", { required: true })}
+              className="block w-full p-3 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:outline-none focus:ring-2 focus:ring-[#1572E8] focus:border-transparent"
             />
             {errors.confirmarPassword && (
-              <span className="text-red-500">{errors.confirmarPassword.message}</span>
+              <span className="text-red-500 text-sm">
+                Este campo es obligatorio.
+              </span>
             )}
+          </div>
+          <button
+            type="submit"
+            className="bg-[#1572E8] hover:bg-[#0f5fc7] text-white font-semibold py-2 px-4 rounded-lg w-full transition-colors duration-300"
+          >
+            Guardar Cambios
+          </button>
+        </form>
+      </main>
 
-            <div className="flex justify-end m-2">
-              <button
-                type="submit"
-                className="bg-[#1572E8] px-4 py-2 rounded-lg text-white hover:bg-[#0f5fc7] transition-all duration-300"
-              >
-                Guardar
-              </button>
-            </div>
-          </form>
-        </div>
-      </div>
-
-      <footer className="bg-gradient-to-r from-[#00498B] to-[#001325] text-white py-4 px-8 flex justify-end">
-        <button
-          onClick={rolnavigation}
-          className="bg-[#1572E8] px-4 py-2 rounded-lg text-white hover:bg-[#0f5fc7] transition-all duration-300"
-        >
-          Volver
-        </button>
-      </footer>
+      {/* Footer */}
+        <footer className=" bg-gradient-to-r from-[#00498B] to-[#001325] text-white py-4 px-8 flex justify-center">
+          <div className="p-5 text-center">
+            <p>© 2025 Sistema de Proyección de Cursos - <strong>FREDY SANTIAGO PEREZ IMBACHI - JUAN DAVID DELGADO CAICEDO</strong></p>
+          <p className="mt-1">Contacto: <a href="mailto:fredy.perez.i@uniautonoma.edu.co" className="hover:text-blue-300">fredy.perez.i@uniautonoma.edu.co</a></p>
+          </div>
+        </footer>
     </div>
   );
 }

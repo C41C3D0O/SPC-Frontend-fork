@@ -3,19 +3,46 @@ import axios from 'axios';
 import { toast } from 'react-hot-toast';
 import Cookies from 'js-cookie';
 import Modal from 'react-modal';
+import { useNavigate } from 'react-router-dom';
+import { Menu } from "../components/Menu";
+import menuIcon from "../assets/menu.png";
+
 
 Modal.setAppElement('#root');
 
+// Componente reutilizable para botón rojo (igual que en Dashboard)
+function RedButton({ children, onClick, type = "button", className = "" }) {
+  return (
+    <button
+      type={type}
+      onClick={onClick}
+      className={`bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded transition-colors duration-300 ${className}`}
+    >
+      {children}
+    </button>
+  );
+}
+
 export function UploadPage() {
+
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen); // Cambia el estado del menú
+  };
+
+
+  const navigate = useNavigate();
   // estados de carga de CSV
-  const [status, setStatus]   = useState({ a: false, b: false, prerrequisitos: false });
+  const [status, setStatus] = useState({ a: false, b: false, prerrequisitos: false });
   const [loading, setLoading] = useState({ a: false, b: false, prerrequisitos: false });
 
   // modal de proyección
   const [modalOpen, setModalOpen] = useState(false);
-  const [anio, setAnio]           = useState(new Date().getFullYear());
-  const [periodo, setPeriodo]     = useState(1);
-  const [version, setVersion]     = useState('Final'); // <— Añadido: controla si es Prelim o final
+  const [anio, setAnio] = useState(new Date().getFullYear());
+  const [periodo, setPeriodo] = useState(1);
+  const [version, setVersion] = useState('Final');
 
   // usuario autenticado
   const [user, setUser] = useState(null);
@@ -23,6 +50,13 @@ export function UploadPage() {
     const u = Cookies.get('user') ? JSON.parse(Cookies.get('user')) : null;
     setUser(u);
   }, []);
+
+  const handleLogout = () => {
+    Cookies.remove("token");
+    Cookies.remove("user");
+    toast.success("Sesión finalizada", { position: "top-center" });
+    navigate("/login");
+  };
 
   // subir CSV (a, b o prerrequisitos)
   const handleFile = async (e, type) => {
@@ -48,13 +82,12 @@ export function UploadPage() {
 
   // abrir modal de Proyección, diferenciando versión
   const openModal = (ver) => {
-    setVersion(ver);   // <— Establece 'Preliminar' o 'Final'
+    setVersion(ver);
     setModalOpen(true);
   };
 
   // confirmar generación de Proyección
   const handleConfirm = async () => {
-    // <— Elegir ruta según version
     const url =
       version === 'Preliminar'
         ? '/api/proyecciones/proyeccionesPreyFin/generate_preliminar/'
@@ -75,65 +108,103 @@ export function UploadPage() {
 
   // configuracion de uploads
   const uploads = [
-    { key: 'a', label: 'Cursos (file A)' },
-    { key: 'b', label: 'Comportamiento (file B)' },
-    { key: 'prerrequisitos', label: 'Prerrequisitos' }
+    { key: 'a', label: 'Cargar Cursos' },
+    { key: 'b', label: 'Cargar Comportamiento' },
+    { key: 'prerrequisitos', label: 'Cargar Prerrequisitos' }
   ];
 
   return (
-    <div className="min-h-screen flex flex-col bg-gradient-to-r from-[#d7e9ff] to-[#f5faff]">
-      {/* Header */}
-      <div className="flex w-full">
-        <div className="bg-[#1572E8] text-white py-4 px-4 text-xl font-bold w-1/5 flex items-center">
-          <div>
-            <h1 className="text-xl font-bold mb-1">
-              {user?.nombre || 'Desconocido'}
-            </h1>
-            <p className="text-base">{user?.rol || 'Desconocido'}</p>
+    <div className="flex flex-col min-h-screen bg-white">
+      {/* Header fijo igual que en Dashboard */}
+      <header className="fixed top-0 left-0 right-0 z-50">
+        <div className="flex w-full">
+          {/* Sección de usuario */}
+          <div className="bg-[#1572E8] text-white py-4 px-4 text-xl font-bold w-1/5 flex items-center space-x-4">
+            <div>
+              <img
+                src={menuIcon}
+                alt="Menu"
+                className="w-8 h-8 ml-5 mr-3"
+                onClick={toggleMenu}
+              />
+            </div>
+            <div>
+              <h1 className="text-xl font-bold mb-4">
+                {user?.nombre || 'Desconocido'}
+              </h1>
+              <p className="text-lg">{user?.rol || 'Desconocido'}</p>
+            </div>
+          </div>
+
+          {/* Sección de título + Botón "Cerrar sesión" */}
+          <div className="bg-gradient-to-r from-[#00498B] to-[#001325] text-white py-8 px-8 text-xl font-bold w-4/5 flex justify-between items-center">
+            <h1 className="text-xl font-semibold">CARGAR ARCHIVOS CSV</h1>
+            <RedButton onClick={() => navigate('/dashboard')}>Inicio</RedButton>
           </div>
         </div>
-        <div className="bg-gradient-to-r from-[#00498B] to-[#001325] text-white py-8 px-8 text-xl font-bold w-4/5 flex items-center">
-          <h1 className="text-xl font-semibold">Cargar Archivos CSV</h1>
-        </div>
-      </div>
+      </header>
+
+      {/* Popup del menú */}
+      {isMenuOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+          <div className="bg-white rounded-xl shadow-lg p-6 w-auto font-bold relative">
+            <button
+              className="text-xl text-blue-700 absolute top-4 right-4 hover:text-gray-900 font-bold"
+              onClick={toggleMenu}
+            >
+              X
+            </button>
+            <Menu /> {/* Renderizar el componente del menú */}
+          </div>
+        </div>)}
 
       {/* Contenido principal */}
-      <div className="flex-grow flex flex-col items-center justify-center py-12">
-        <div className="bg-white w-full max-w-xl p-8 rounded-lg shadow-xl">
+      <div className="flex justify-center items-center flex-1 mt-20">
+        <div className="bg-[#d7e9ff] p-10 rounded-lg max-w-4xl w-full">
           <h2 className="text-xl font-bold mb-6 text-[#00498B]">Sube tus archivos:</h2>
 
-          {uploads.map(({ key, label }) => (
-            <div key={key} className="mb-6">
-              <label className="block mb-2 font-semibold text-gray-700">
-                {label}
-              </label>
-              <input
-                type="file"
-                accept=".csv"
-                onChange={(e) => handleFile(e, key)}
-                disabled={loading[key]}
-                className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none focus:ring-2 focus:ring-[#1572E8] focus:border-transparent"
-              />
-              <div className="mt-2">
-                {loading[key] && <span className="text-yellow-500">Subiendo…</span>}
-                {status[key]  && <span className="text-green-600 font-semibold">✔ Cargado</span>}
+          <div className="space-y-6">
+            {uploads.map(({ key, label }) => (
+              <div key={key} className="mb-6">
+                <label className="block mb-2 font-semibold text-gray-700">
+                  {label}
+                </label>
+                <div className="flex items-center gap-4">
+                  <input
+                    type="file"
+                    accept=".csv"
+                    onChange={(e) => handleFile(e, key)}
+                    disabled={loading[key]}
+                    className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none focus:ring-2 focus:ring-[#1572E8] focus:border-transparent"
+                  />
+                  <div className="min-w-[120px]">
+                    {loading[key] && <span className="text-yellow-500">Subiendo…</span>}
+                    {status[key] && <span className="text-green-600 font-semibold">✔ Cargado</span>}
+                  </div>
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
 
           {/* Botones de proyección */}
           <div className="mt-8 flex flex-col space-y-4">
             <button
-              onClick={() => openModal('Preliminar')}   // <— Ahora abre modal en modo “Preliminar”
-              className="w-full bg-[#1572E8] text-white py-2 rounded-lg hover:bg-[#0f5fc7] transition-all duration-300"
+              onClick={() => openModal('Preliminar')}
+              className="w-full bg-[#1572E8] text-white py-2 rounded-lg font-bold hover:bg-[#0f5fc7] transition-all duration-300"
             >
               Realizar Proyección Preliminar
             </button>
             <button
-              onClick={() => openModal('Final')}         // <— Y aquí en modo “Final”
-              className="w-full bg-[#1572E8] text-white py-2 rounded-lg hover:bg-[#0f5fc7] transition-all duration-300"
+              onClick={() => openModal('Final')}
+              className="w-full bg-[#1572E8] text-white py-2 rounded-lg font-bold hover:bg-[#0f5fc7] transition-all duration-300"
             >
               Realizar Proyección Final
+            </button>
+            <button
+              onClick={() => navigate("/filtro-de-informacion")}
+              className="w-full bg-[#1572E8] text-white py-2 rounded-lg font-bold hover:bg-[#0f5fc7] transition-all duration-300"
+            >
+              Ver Proyección
             </button>
           </div>
         </div>
@@ -143,55 +214,67 @@ export function UploadPage() {
       <Modal
         isOpen={modalOpen}
         onRequestClose={() => setModalOpen(false)}
-        className="bg-white p-8 max-w-md mx-auto mt-20 rounded shadow-lg"
+        className="bg-white p-8 max-w-md mx-auto rounded-lg shadow-lg"
         overlayClassName="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center"
       >
-        <h2 className="text-xl font-bold mb-4">Nueva Proyección {version}</h2>
+        <h2 className="text-xl font-bold mb-4 text-[#00498B]">Nueva Proyección {version}</h2>
 
-        <label>Año:</label>
-        <input
-          type="number"
-          value={anio}
-          onChange={(e) => setAnio(+e.target.value)}
-          className="w-full p-2 mb-4 border rounded"
-        />
+        <div className="space-y-4">
+          <div>
+            <label className="block mb-1 font-medium">Año:</label>
+            <input
+              type="number"
+              value={anio}
+              onChange={(e) => setAnio(+e.target.value)}
+              className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-[#1572E8] focus:border-transparent"
+            />
+          </div>
 
-        <label>Periodo:</label>
-        <select
-          value={periodo}
-          onChange={(e) => setPeriodo(+e.target.value)}
-          className="w-full p-2 mb-4 border rounded"
-        >
-          <option value={1}>1</option>
-          <option value={2}>2</option>
-        </select>
+          <div>
+            <label className="block mb-1 font-medium">Periodo:</label>
+            <select
+              value={periodo}
+              onChange={(e) => setPeriodo(+e.target.value)}
+              className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-[#1572E8] focus:border-transparent"
+            >
+              <option value={1}>1</option>
+              <option value={2}>2</option>
+            </select>
+          </div>
 
-        <label>Versión:</label>
-        <input
-          type="text"
-          value={version}
-          disabled
-          className="w-full p-2 mb-6 border rounded bg-gray-200"
-        />
+          <div>
+            <label className="block mb-1 font-medium">Versión:</label>
+            <input
+              type="text"
+              value={version}
+              disabled
+              className="w-full p-2 border border-gray-300 rounded bg-gray-100"
+            />
+          </div>
+        </div>
 
-        <div className="flex justify-end space-x-2">
-          <button onClick={() => setModalOpen(false)} className="px-4 py-2">
+        <div className="flex justify-end space-x-4 mt-6">
+          <button 
+            onClick={() => setModalOpen(false)} 
+            className="px-4 py-2 text-gray-700 hover:text-gray-900 font-medium"
+          >
             Cancelar
           </button>
-          <button onClick={handleConfirm} className="px-4 py-2 bg-blue-600 text-white rounded">
+          <button 
+            onClick={handleConfirm} 
+            className="px-4 py-2 bg-[#1572E8] text-white rounded-lg font-semibold hover:bg-[#0f5fc7] transition-all duration-300"
+          >
             Confirmar
           </button>
         </div>
       </Modal>
 
-      {/* Footer */}
-      <footer className="bg-gradient-to-r from-[#00498B] to-[#001325] text-white py-4 px-8 flex justify-end">
-        <button
-          className="bg-[#1572E8] px-4 py-2 rounded-lg text-white hover:bg-[#0f5fc7] transition-all duration-300"
-          onClick={() => (window.location.href = '/dashboard')}
-        >
-          Volver
-        </button>
+      {/* Footer fijo igual que en Dashboard */}
+      <footer className="bg-gradient-to-r from-[#00498B] to-[#001325] text-white py-8 fixed bottom-0 left-0 right-0 z-50 flex items-center justify-center">
+        <div className="text-center">
+          <p>© 2025 Sistema de Proyección de Cursos - <strong>FREDY SANTIAGO PEREZ IMBACHI - JUAN DAVID DELGADO CAICEDO</strong></p>
+          <p className="mt-1">Contacto: <a href="mailto:fredy.perez.i@uniautonoma.edu.co" className="hover:text-blue-300">fredy.perez.i@uniautonoma.edu.co</a></p>
+        </div>
       </footer>
     </div>
   );

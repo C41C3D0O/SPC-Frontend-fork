@@ -9,6 +9,19 @@ import uploadIcon from "../assets/upload-svgrepo-com.png";
 import viewIcon from "../assets/view-svgrepo-com.png";
 import userCogIcon from "../assets/user-cog-svgrepo-com.png";
 
+// Componente reutilizable para botón rojo
+function RedButton({ children, onClick, type = "button", className = "" }) {
+  return (
+    <button
+      type={type}
+      onClick={onClick}
+      className={`bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded transition-colors duration-300 ${className}`}
+    >
+      {children}
+    </button>
+  );
+}
+
 export function Dashboard() {
   const navigate = useNavigate();
   const user = Cookies.get("user") ? JSON.parse(Cookies.get("user")) : null;
@@ -23,67 +36,77 @@ export function Dashboard() {
 
   return (
     <div className="flex flex-col min-h-screen bg-white">
-      <div className="flex w-full">
-        {/* Sección de usuario */}
-        <div className="bg-[#1572E8] text-white py-4 px-4 text-xl font-bold w-1/5 flex items-center space-x-4">
-          <div>
-            <h1 className="text-xl font-bold mb-4">
-              {user && user.nombre ? user.nombre : "Desconocido"}
-            </h1>
-            <p className="text-base">{user ? user.rol : "Desconocido"}</p>
-          </div>
-        </div>
-        {/* Sección de título con header */}
-        <div className="bg-gradient-to-r from-[#00498B] to-[#001325] text-white py-8 px-8 text-xl font-bold w-4/5 flex justify-start items-center">
-          <h1 className="text-xl font-semibold">SISTEMA DE PROYECCIÓN DE CURSOS</h1>
-        </div>
-      </div>
-      <div className="bg-[#d7e9ff] mx-20 p-20 rounded-lg mt-14">
-        <div className="flex flex-wrap justify-center items-center gap-20">
-          {/* Cargar archivos */}
-          <div className="flex flex-col items-center space-y-4">
-            <img src={uploadIcon} alt="Cargar archivos" className="w-20 h-20" />
-            <button onClick={() => navigate('/upload')} className="bg-[#1572E8] px-6 py-3 rounded-lg text-white font-bold hover:bg-[#0f5fc7] transition-all duration-300">
-              Cargar archivos
-            </button>
+      <header className="fixed top-0 left-0 right-0 z-50">
+        <div className="flex w-full">
+          {/* Sección de usuario */}
+          <div className="bg-[#1572E8] text-white py-4 px-4 text-xl font-bold w-1/5 flex items-center space-x-4">
+            <div>
+              <h1 className="text-xl font-bold mb-4 ml-8">
+                {user && user.nombre ? user.nombre : "Desconocido"}
+              </h1>
+              <p className="text-lg ml-8">{user ? user.rol : "Desconocido"}</p>
+            </div>
           </div>
 
-          {/* Visualizar proyecciones */}
-          <div className="flex flex-col items-center space-y-4">
-            <img
-              src={viewIcon}
-              alt="Visualizar proyecciones"
-              className="w-20 h-20"
-            />
-            <button onClick={() => navigate('/filtro-de-informacion')} className="bg-[#1572E8] px-6 py-3 rounded-lg text-white font-bold hover:bg-[#0f5fc7] transition-all duration-300">
-              Visualizar proyecciones
-            </button>
+          {/* Sección de título + Botón "Cerrar sesión" */}
+          <div className="bg-gradient-to-r from-[#00498B] to-[#001325] text-white py-8 px-8 text-xl font-bold w-4/5 flex justify-between items-center">
+            <h1 className="text-xl font-semibold">SISTEMA DE PROYECCIÓN DE CURSOS</h1>
+            <RedButton onClick={handleLogout}>Cerrar sesión</RedButton>
           </div>
+        </div>
+      </header>
 
-          {/* Gestión de usuario */}
-          <div className="flex flex-col items-center space-y-4">
-            <img
-              src={userCogIcon}
-              alt="Gestión de usuario"
-              className="w-20 h-20"
-            />
-            <Link to="/gestion-usuarios">
-              <button className="bg-[#1572E8] px-6 py-3 rounded-lg text-white font-bold hover:bg-[#0f5fc7] transition-all duration-300">
-                Gestión de usuario
+      <div className="flex justify-center items-center flex-1 mt-20">
+        <div className="bg-[#d7e9ff] p-10 rounded-lg max-w-4xl w-full">
+          <div className="flex flex-wrap justify-center items-center gap-10">
+            {/* Cargar archivos */}
+            <div className="flex flex-col items-center space-y-4">
+              <img src={uploadIcon} alt="Cargar archivos" className="w-16 h-16" />
+              <button
+                onClick={() => navigate('/upload')}
+                className="bg-[#1572E8] px-4 py-2 rounded-lg text-white font-bold hover:bg-[#0f5fc7] transition-all duration-300"
+              >
+                Cargar archivos
               </button>
-            </Link>
+            </div>
+
+            {/* Visualizar proyecciones */}
+            <div className="flex flex-col items-center space-y-4">
+              <img
+                src={viewIcon}
+                alt="Visualizar proyecciones"
+                className="w-16 h-16"
+              />
+              <button
+                onClick={() => navigate('/filtro-de-informacion')}
+                className="bg-[#1572E8] px-4 py-2 rounded-lg text-white font-bold hover:bg-[#0f5fc7] transition-all duration-300"
+              >
+                Visualizar proyecciones
+              </button>
+            </div>
+
+            {/* Gestión de usuario */}
+            <div className="flex flex-col items-center space-y-4">
+              <img
+                src={userCogIcon}
+                alt="Gestión de usuario"
+                className="w-16 h-16"
+              />
+              <Link to="/gestion-usuarios">
+                <button className="bg-[#1572E8] px-4 py-2 rounded-lg text-white font-bold hover:bg-[#0f5fc7] transition-all duration-300">
+                  Gestión de usuario
+                </button>
+              </Link>
+            </div>
           </div>
         </div>
       </div>
-      {/* Footer */}
-      <footer className="bg-gradient-to-r from-[#00498B] to-[#001325] text-white py-6 mt-auto">
-        <div className="flex justify-center">
-          <button
-            onClick={handleLogout}
-            className="bg-red-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-red-700 transition-all duration-300"
-          >
-            Cerrar sesión
-          </button>
+
+      {/* Footer con tamaño igual al header */}
+      <footer className="bg-gradient-to-r from-[#00498B] to-[#001325] text-white py-8 fixed bottom-0 left-0 right-0 z-50 flex items-center justify-center">
+        <div className="text-center">
+          <p>© 2025 Sistema de Proyección de Cursos - <strong>FREDY SANTIAGO PEREZ IMBACHI - JUAN DAVID DELGADO CAICEDO</strong></p>
+          <p className="mt-1">Contacto: <a href="mailto:fredy.perez.i@uniautonoma.edu.co" className="hover:text-blue-300">fredy.perez.i@uniautonoma.edu.co</a></p>
         </div>
       </footer>
     </div>

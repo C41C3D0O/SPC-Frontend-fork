@@ -5,6 +5,21 @@ import "react-datepicker/dist/react-datepicker.css";
 import { useNavigate } from "react-router-dom";
 import { FilterPopup } from "../components/FilterPopup";
 import { ValidacionDatos } from "../components/ValidacionDatos";
+import { Menu } from "../components/Menu";
+import menuIcon from "../assets/menu.png";
+
+// Componente reutilizable para botón azul (estilo de la primera página)
+function BlueButton({ children, onClick, type = "button", className = "" }) {
+  return (
+    <button
+      type={type}
+      onClick={onClick}
+      className={`bg-[#1572E8] hover:bg-[#0f5fc7] text-white font-semibold py-2 px-4 rounded transition-colors duration-300 ${className}`}
+    >
+      {children}
+    </button>
+  );
+}
 
 export function InformationFilter() {
   const navigate = useNavigate();
@@ -117,6 +132,13 @@ export function InformationFilter() {
     9: "INGENIERÍA CIVIL"
   };
 
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen); // Cambia el estado del menú
+  };
+
   // Efecto para actualizar el programa seleccionado cuando se recibe el ID del coordinador
   useEffect(() => {
     if (programaCoordinador && userRol === "Coordinador") {
@@ -167,33 +189,62 @@ export function InformationFilter() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="flex flex-col min-h-screen bg-white">
       {/* Componente ValidacionDatos (invisible) */}
       <ValidacionDatos onDatosRecibidos={setProgramaCoordinador} />
       
-      {/* Header */}
-      <div className="flex w-full">
-        <div className="bg-[#1572E8] text-white py-4 px-4 text-xl font-bold w-1/5 flex items-center space-x-4">
-          <div>
-            <h1 className="text-xl font-bold mb-4">
-              {user && user.nombre ? user.nombre : "Desconocido"}
-            </h1>
-            <p className="text-base">{user ? user.rol : "Desconocido"}</p>
+      {/* Header fijo */}
+      <header className="fixed top-0 left-0 right-0 z-50">
+        <div className="flex w-full">
+          {/* Sección de usuario */}
+          <div className="bg-[#1572E8] text-white py-4 px-4 text-xl font-bold w-1/5 flex items-center space-x-4">
+            <div>
+              <img
+                src={menuIcon}
+                alt="Menu"
+                className="w-8 h-8 ml-5 mr-3"
+                onClick={toggleMenu}
+              />
+            </div>
+            <div>
+              <h1 className="text-xl font-bold mb-4">
+                {user?.nombre || 'Desconocido'}
+              </h1>
+              <p className="text-lg">{user?.rol || 'Desconocido'}</p>
+            </div>
+          </div>
+
+          {/* Sección de título */}
+          <div className="bg-gradient-to-r from-[#00498B] to-[#001325] text-white py-8 px-8 text-xl font-bold w-4/5 flex justify-between items-center">
+            <h1 className="text-xl font-semibold">VISUALIZAR INFORMACIÓN</h1>
+            <BlueButton onClick={rolnavigation}>Inicio</BlueButton>
           </div>
         </div>
-        <div className="bg-gradient-to-r from-[#00498B] to-[#001325] text-white py-8 px-8 text-xl font-bold w-4/5 flex justify-start items-center">
-          <h1 className="text-xl font-semibold">VISUALIZAR INFORMACIÓN</h1>
-        </div>
-      </div>
+      </header>
+      {/* Popup del menú */}
+      {isMenuOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+          <div className="bg-white rounded-xl shadow-lg p-6 w-auto font-bold relative">
+            <button
+              className="text-xl text-blue-700 absolute top-4 right-4 hover:text-gray-900 font-bold"
+              onClick={toggleMenu}
+            >
+              X
+            </button>
+            <Menu /> {/* Renderizar el componente del menú */}
+          </div>
+        </div>)}
 
-      {/* Content */}
-      <div className="flex-grow flex items-center justify-center">
-        <div className="bg-[#d7e9ff] w-full max-w-4xl mx-auto px-10 py-16 mt-16 mb-16 rounded-lg shadow-md">
+      {/* Contenido principal */}
+      <div className="flex justify-center items-center flex-1 mt-32 pt-4">
+        <div className="bg-[#d7e9ff] p-10 rounded-lg max-w-4xl w-full">
+          <h2 className="text-xl font-bold mb-6 text-[#00498B]">Filtros de visualización:</h2>
+
           {/* Tipo de Visualización */}
           <div className="mb-6">
-            <label className="block mb-2 font-semibold">Tipo de Visualización</label>
+            <label className="block mb-2 font-semibold text-gray-700">Tipo de Visualización</label>
             <select
-              className="bg-gray-100 p-3 rounded-lg block w-full"
+              className="block w-full p-3 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:outline-none focus:ring-2 focus:ring-[#1572E8] focus:border-transparent"
               value={selectedTipo}
               onChange={(e) => setSelectedTipo(e.target.value)}
             >
@@ -209,9 +260,9 @@ export function InformationFilter() {
           <div className={opacityClass}>
             {/* Programa */}
             <div className="mb-4">
-              <label className="block mb-2 font-semibold">Programa</label>
+              <label className="block mb-2 font-semibold text-gray-700">Programa</label>
               <select
-                className="bg-gray-100 p-3 rounded-lg block w-full"
+                className="block w-full p-3 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:outline-none focus:ring-2 focus:ring-[#1572E8] focus:border-transparent"
                 value={selectedPrograma}
                 onChange={(e) => setSelectedPrograma(e.target.value)}
                 disabled={isFiltrosDisabled || userRol === "Coordinador"}
@@ -226,13 +277,13 @@ export function InformationFilter() {
 
             {/* Año */}
             <div className="mb-4">
-              <label className="block mb-2 font-semibold">Año</label>
+              <label className="block mb-2 font-semibold text-gray-700">Año</label>
               <DatePicker
                 selected={selectedAño}
                 onChange={(date) => setSelectedAño(date)}
                 showYearPicker
                 dateFormat="yyyy"
-                className="bg-gray-100 p-3 rounded-lg block w-full"
+                className="block w-full p-3 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:outline-none focus:ring-2 focus:ring-[#1572E8] focus:border-transparent"
                 placeholderText="Seleccione un año"
                 disabled={isFiltrosDisabled}
               />
@@ -240,9 +291,9 @@ export function InformationFilter() {
 
             {/* Periodo */}
             <div className="mb-4">
-              <label className="block mb-2 font-semibold">Periodo</label>
+              <label className="block mb-2 font-semibold text-gray-700">Periodo</label>
               <select
-                className="bg-gray-100 p-3 rounded-lg block w-full"
+                className="block w-full p-3 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:outline-none focus:ring-2 focus:ring-[#1572E8] focus:border-transparent"
                 value={selectedPeriodo}
                 onChange={(e) => setSelectedPeriodo(e.target.value)}
                 disabled={isFiltrosDisabled}
@@ -257,9 +308,9 @@ export function InformationFilter() {
 
             {/* Semestre */}
             <div className="mb-4">
-              <label className="block mb-2 font-semibold">Semestre</label>
+              <label className="block mb-2 font-semibold text-gray-700">Semestre</label>
               <select
-                className="bg-gray-100 p-3 rounded-lg block w-full"
+                className="block w-full p-3 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:outline-none focus:ring-2 focus:ring-[#1572E8] focus:border-transparent"
                 value={selectedSemestre}
                 onChange={(e) => setSelectedSemestre(e.target.value)}
                 disabled={isFiltrosDisabled}
@@ -274,9 +325,9 @@ export function InformationFilter() {
 
             {/* Versión */}
             <div className="mb-4">
-              <label className="block mb-2 font-semibold">Versión</label>
+              <label className="block mb-2 font-semibold text-gray-700">Versión</label>
               <select
-                className="bg-gray-100 p-3 rounded-lg block w-full"
+                className="block w-full p-3 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:outline-none focus:ring-2 focus:ring-[#1572E8] focus:border-transparent"
                 value={selectedVersion}
                 onChange={(e) => setSelectedVersion(e.target.value)}
                 disabled={isFiltrosDisabled}
@@ -291,9 +342,9 @@ export function InformationFilter() {
 
             {/* Curso */}
             <div className="mb-6">
-              <label className="block mb-2 font-semibold">Curso</label>
+              <label className="block mb-2 font-semibold text-gray-700">Curso</label>
               <select
-                className="bg-gray-100 p-3 rounded-lg block w-full"
+                className="block w-full p-3 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:outline-none focus:ring-2 focus:ring-[#1572E8] focus:border-transparent"
                 value={selectedCurso}
                 onChange={(e) => setSelectedCurso(e.target.value)}
                 disabled={isFiltrosDisabled}
@@ -308,19 +359,13 @@ export function InformationFilter() {
           </div>
 
           {/* Botones Visualizar y Descargar */}
-          <div className="mt-8 text-center flex justify-center space-x-4">
-            <button
-              onClick={handleVisualizarClick}
-              className="bg-[#1572E8] text-white py-3 px-6 rounded-lg font-semibold"
-            >
+          <div className="mt-8 flex justify-center space-x-4">
+            <BlueButton onClick={handleVisualizarClick} className="px-6 py-3">
               Visualizar
-            </button>
-            <button
-              onClick={handleDownloadClick}
-              className="bg-[#1572E8] text-white py-3 px-6 rounded-lg font-semibold"
-            >
+            </BlueButton>
+            <BlueButton onClick={handleDownloadClick} className="px-6 py-3">
               Descargar
-            </button>
+            </BlueButton>
           </div>
         </div>
       </div>
@@ -333,14 +378,13 @@ export function InformationFilter() {
       />
 
       {/* Footer */}
-      <footer className="bg-gradient-to-r from-[#00498B] to-[#001325] text-white py-4 px-8 text-xl font-bold flex justify-end">
-        <button
-          onClick={rolnavigation}
-          className="bg-[#1572E8] px-4 py-2 rounded-lg hover:bg-[#0f5fc7] transition duration-300"
-        >
-          Volver
-        </button>
-      </footer>
+     <footer className="mt-10 bg-gradient-to-r from-[#00498B] to-[#001325] text-white py-4 px-8 flex justify-center">
+      <div className="p-5 text-center">
+        <p>© 2025 Sistema de Proyección de Cursos - <strong>FREDY SANTIAGO PEREZ IMBACHI - JUAN DAVID DELGADO CAICEDO</strong></p>
+          <p className="mt-1">Contacto: <a href="mailto:fredy.perez.i@uniautonoma.edu.co" className="hover:text-blue-300">fredy.perez.i@uniautonoma.edu.co</a></p>
+      </div>
+    </footer>
+
     </div>
   );
 }

@@ -108,31 +108,16 @@ export function Login() {
               <p className="text-red-500 mb-4">{errors.password.message}</p>
             )}
 
-            <div className="flex items-center mb-4">
-              <input
-                type="checkbox"
-                {...register("recordarme")}
-                id="recordarme"
-                className="mr-2"
-              />
-              <label htmlFor="recordarme" className="text-sm">
-                Recuérdame
-              </label>
-            </div>
+            
 
             <button
               type="submit"
-              className="w-full bg-[#00498B] text-white py-3 rounded hover:bg-blue-700 transition"
+              className=" w-full bg-[#00498B] text-white py-3 rounded hover:bg-blue-700 transition"
               disabled={loading}
             >
               {loading ? "Iniciando..." : "Iniciar sesión"}
             </button>
           </form>
-          <div className="mt-4 text-center">
-            <a href="#" className="text-[#3489ff] hover:underline">
-              ¿No recuerdas tu contraseña?
-            </a>
-          </div>
         </div>
       </div>
     </div>

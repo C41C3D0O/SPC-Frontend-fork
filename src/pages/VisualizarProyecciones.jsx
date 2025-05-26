@@ -6,6 +6,8 @@ import Cookies from 'js-cookie';
 import { ListarProyecciones } from "../components/ListarProyecciones";
 import { ListarCursos } from "../components/listarcursos";
 import { ListarComportamiento } from "../components/ListarComportamiento";
+import { Menu } from "../components/Menu";
+import menuIcon from "../assets/menu.png";
 
 export function VisualizarProyecciones() {
   const [types, setTypes] = useState([]);
@@ -41,44 +43,115 @@ export function VisualizarProyecciones() {
     }
   }
 
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen); // Cambia el estado del menú
+  };
+
+  function regresarfiltros(){
+    navigate("/filtro-de-informacion")
+  }
+
+ function DualButtons({ leftButton, rightButton }) {
   return (
-    <div className="min-h-screen flex flex-col bg-gradient-to-r from-[#d7e9ff] to-[#f5faff]">
-      {/* Header */}
-      <div className="flex w-full">
-        <div className="bg-[#1572E8] text-white py-4 px-6 w-1/5 flex flex-col justify-center">
-          <h2 className="text-lg font-bold">{user?.nombre || 'Desconocido'}</h2>
-          <p className="text-sm">{user?.rol || 'Desconocido'}</p>
-        </div>
-        <div className="bg-gradient-to-r from-[#00498B] to-[#001325] text-white py-4 px-8 w-4/5 flex items-center justify-between">
-          <h1 className="text-xl font-semibold">
-            VISUALIZAR {selectedTipo === "proyecciones" ? "PROYECCIONES" : 
-                       selectedTipo === "cursos" ? "CURSOS" : "COMPORTAMIENTO"}
-          </h1>
-          <div className="w-1/3">
+    <div className="inline-flex rounded overflow-hidden border-[#1572E8]">
+      <button
+        type={leftButton.type || "button"}
+        onClick={regresarfiltros}
+        className={`bg-[#1572E8] hover:bg-[#0f5fc7] text-white font-semibold py-2 px-4 transition-colors duration-300 rounded-l ${leftButton.className || ""}`}
+      >
+        {leftButton.label}
+      </button>
+      <button
+        type={rightButton.type || "button"}
+        onClick={rolnavigation}
+        className={`bg-[#1572E8] hover:bg-[#0f5fc7] text-white font-semibold py-2 px-4 transition-colors duration-300 rounded-r ${rightButton.className || ""}`}
+      >
+        {rightButton.label}
+      </button>
+    </div>
+  );
+
+}
+  return (
+    <div className="min-h-screen flex flex-col bg-gradient-to-b from-[#d7e9ff] to-[#ffffff] w-full">
+      {/* Header fijo */}
+      <header className="fixed top-0 left-0 right-0 z-50">
+        <div className="flex w-full">
+          {/* Sección de usuario */}
+          <div className="bg-[#1572E8] text-white py-4 px-4 text-xl font-bold w-1/5 flex items-center space-x-4">
+            <div>
+              <img
+                src={menuIcon}
+                alt="Menu"
+                className="w-8 h-8 ml-5 mr-3"
+                onClick={toggleMenu}
+              />
+            </div>
+            <div>
+              <h1 className="text-xl font-bold mb-4">
+                {user?.nombre || 'Desconocido'}
+              </h1>
+              <p className="text-lg">{user?.rol || 'Desconocido'}</p>
+            </div>
+          </div>
+
+          {/* Sección de título */}
+          <div className="bg-gradient-to-r from-[#00498B] to-[#001325] text-white py-8 px-8 text-xl font-bold w-4/5 flex justify-between items-center">
+            <h1 className="text-xl font-semibold">
+              VISUALIZAR {selectedTipo === "proyecciones" ? "PROYECCIONES" : 
+                         selectedTipo === "cursos" ? "CURSOS" : "COMPORTAMIENTO"}
+            </h1>
+            <DualButtons
+              leftButton={{
+                label: "Volver",
+                className: "mr-2",
+              }}
+              rightButton={{
+                label: "Inicio",
+                onClick: () => alert("Botón derecho presionado"),
+              }}
+            />
           </div>
         </div>
-      </div>
+      </header>
 
-      <div>
-        {selectedTipo === "proyecciones" && (
-          <ListarProyecciones 
-            searchQuery={searchQuery} 
-            appliedFilters={appliedFilters} 
-          />
-        )}
-        {selectedTipo === "cursos" && <ListarCursos searchQuery={searchQuery}/>}
-        {selectedTipo === "comportamiento" && <ListarComportamiento searchQuery={searchQuery}/>}
-      </div>
+      {/* Popup del menú */}
+      {isMenuOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+          <div className="bg-white rounded-xl shadow-lg p-6 w-auto font-bold relative">
+            <button
+              className="text-xl text-blue-700 absolute top-4 right-4 hover:text-gray-900 font-bold"
+              onClick={toggleMenu}
+            >
+              X
+            </button>
+            <Menu /> {/* Renderizar el componente del menú */}
+          </div>
+        </div>)}
+
+      {/* Contenido principal */}
+      <main className="flex flex-1 pt-24 pb-16"> {/* Añadido padding para el header fijo */}
+        <div className="w-full px-8">
+          {selectedTipo === "proyecciones" && (
+            <ListarProyecciones 
+              searchQuery={searchQuery} 
+              appliedFilters={appliedFilters} 
+            />
+          )}
+          {selectedTipo === "cursos" && <ListarCursos searchQuery={searchQuery}/>}
+          {selectedTipo === "comportamiento" && <ListarComportamiento searchQuery={searchQuery}/>}
+        </div>
+      </main>
 
       {/* Footer */}
-      <footer className="bg-gradient-to-r from-[#00498B] to-[#001325] text-white py-4 px-8 flex justify-end">
-        <button
-          onClick={() => navigate('/filtro-de-informacion')}
-          className="bg-[#1572E8] px-4 py-2 rounded-lg hover:bg-[#0f5fc7] transition duration-300"
-        >
-          Volver
-        </button>
-      </footer>
+      <footer className="w-full bg-gradient-to-r from-[#00498B] to-[#001325] text-white py-4 px-8">
+        <div className="p-5 text-center">
+          <p>© 2025 Sistema de Proyección de Cursos - <strong>FREDY SANTIAGO PEREZ IMBACHI - JUAN DAVID DELGADO CAICEDO</strong></p>
+          <p className="mt-1">Contacto: <a href="mailto:fredy.perez.i@uniautonoma.edu.co" className="hover:text-blue-300">fredy.perez.i@uniautonoma.edu.co</a></p>
+        </div>
+    </footer>
     </div>
   );
 }
