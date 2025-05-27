@@ -190,7 +190,7 @@ export function FormularioRegistroUsuarios() {
         <div className="bg-white w-full max-w-4xl mx-auto px-10 py-16 mt-16 mb-16 rounded-lg shadow-md">
           <form onSubmit={onSubmit}>
             <h2 className="text-xl font-bold text-[#00498B] mb-6">
-            Ingrese los Datosa
+            Ingrese los Datos
             </h2>
             <input
               type="text"
