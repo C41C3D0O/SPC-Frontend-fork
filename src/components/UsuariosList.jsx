@@ -124,7 +124,7 @@ export function UsuariosList() {
 
   {/* Mapeo de registros de usuarios */}
   <div >
-    <div className="m-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8"> {/* Agregado el margen inferior mb-8 */}
+    <div className="m-10 mb-40 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8"> {/* Agregado el margen inferior mb-8 */}
       {registroUsuarios.map((registroUsuarios) => (
         <UsuariosCard
           key={registroUsuarios.id}

@@ -236,7 +236,7 @@ export function InformationFilter() {
         </div>)}
 
       {/* Contenido principal */}
-      <div className="flex justify-center items-center flex-1 mt-32 pt-4">
+      <div className="flex justify-center items-center flex-1 mt-32 pt-4 mb-40 mt-20">
         <div className="bg-[#d7e9ff] p-10 rounded-lg max-w-4xl w-full">
           <h2 className="text-xl font-bold mb-6 text-[#00498B]">Filtros de visualización:</h2>
 
@@ -378,7 +378,7 @@ export function InformationFilter() {
       />
 
       {/* Footer */}
-     <footer className="bg-gradient-to-r from-[#00498B] to-[#001325] text-white py-4 fixed bottom-0 left-0 right-0 z-50 flex items-center justify-center">
+     <footer className="mt-10 bg-gradient-to-r from-[#00498B] to-[#001325] text-white py-4 fixed bottom-0 left-0 right-0 z-50 flex items-center justify-center">
         <div className="text-center">
           <p>© 2025 Sistema de Proyección de Cursos</p>
           <p className="mt-1">Contacto: <a href="mailto:fredy.perez.i@uniautonoma.edu.co" className="hover:text-blue-300">fredy.perez.i@uniautonoma.edu.co</a><a href="mailto:juan.delgado.c@uniautonoma.edu.co" className="hover:text-blue-300"> - juan.delgado.c@uniautonoma.edu.co</a></p>
