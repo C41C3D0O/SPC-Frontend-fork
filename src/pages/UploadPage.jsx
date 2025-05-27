@@ -124,7 +124,7 @@ export function UploadPage() {
               <img
                 src={menuIcon}
                 alt="Menu"
-                className="w-8 h-8 ml-5 mr-3"
+                className="w-6 h-6 ml-5 mr-3"
                 onClick={toggleMenu}
               />
             </div>
@@ -139,7 +139,10 @@ export function UploadPage() {
           {/* Sección de título + Botón "Cerrar sesión" */}
           <div className="bg-gradient-to-r from-[#00498B] to-[#001325] text-white py-4 px-8 text-lg font-bold w-4/5 flex justify-between items-center">
             <h1 className="text-lg font-semibold">CARGAR ARCHIVOS CSV</h1>
-            <RedButton onClick={() => navigate('/dashboard')}>Inicio</RedButton>
+            <RedButton 
+            onClick={() => navigate('/dashboard')}
+            className="w-auto bg-[#1572E8] text-white py-1 rounded-lg font-bold hover:bg-[#0f5fc7] transition-all duration-300"
+            >Inicio</RedButton > 
           </div>
         </div>
       </header>

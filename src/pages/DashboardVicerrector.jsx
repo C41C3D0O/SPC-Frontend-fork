@@ -43,16 +43,16 @@ export function DashboardVicerrector() {
           {/* Sección de usuario */}
           <div className="bg-[#1572E8] text-white py-4 px-4 text-xl font-bold w-1/5 flex items-center space-x-4">
             <div>
-              <h1 className="text-xl font-bold mb-4 ml-8">
+              <h1 className="text-md font-semibold mb-4 ml-8">
                 {user && user.nombre ? user.nombre : "Desconocido"}
               </h1>
-              <p className="text-lg ml-8">{user ? user.rol : "Desconocido"}</p>
+              <p className="text-md ml-8">{user ? user.rol : "Desconocido"}</p>
             </div>
           </div>
 
           {/* Sección de título + Botón "Cerrar sesión" */}
           <div className="bg-gradient-to-r from-[#00498B] to-[#001325] text-white py-8 px-8 text-xl font-bold w-4/5 flex justify-between items-center">
-            <h1 className="text-xl font-semibold">SISTEMA DE PROYECCIÓN DE CURSOS</h1>
+            <h1 className="text-lg font-semibold">SISTEMA DE PROYECCIÓN DE CURSOS</h1>
             <RedButton onClick={handleLogout}>Cerrar sesión</RedButton>
           </div>
         </div>
