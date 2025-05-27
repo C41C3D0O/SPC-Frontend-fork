@@ -39,7 +39,7 @@ export function Dashboard() {
       <header className="fixed top-0 left-0 right-0 z-50">
         <div className="flex w-full">
           {/* Sección de usuario */}
-          <div className="bg-[#1572E8] text-white py-4 px-4 text-xl font-bold w-1/5 flex items-center space-x-4">
+          <div className="bg-[#1572E8] text-white py-4 px-4 text-lg font-bold w-1/5 flex items-center space-x-4">
             <div>
               <h1 className="text-xl font-bold mb-4 ml-8">
                 {user && user.nombre ? user.nombre : "Desconocido"}
@@ -49,7 +49,7 @@ export function Dashboard() {
           </div>
 
           {/* Sección de título + Botón "Cerrar sesión" */}
-          <div className="bg-gradient-to-r from-[#00498B] to-[#001325] text-white py-8 px-8 text-xl font-bold w-4/5 flex justify-between items-center">
+          <div className="bg-gradient-to-r from-[#00498B] to-[#001325] text-white py-4 px-8 text-lg font-bold w-4/5 flex justify-between items-center">
             <h1 className="text-xl font-semibold">SISTEMA DE PROYECCIÓN DE CURSOS</h1>
             <RedButton onClick={handleLogout}>Cerrar sesión</RedButton>
           </div>
@@ -103,10 +103,11 @@ export function Dashboard() {
       </div>
 
       {/* Footer con tamaño igual al header */}
-      <footer className="bg-gradient-to-r from-[#00498B] to-[#001325] text-white py-8 fixed bottom-0 left-0 right-0 z-50 flex items-center justify-center">
+      <footer className="bg-gradient-to-r from-[#00498B] to-[#001325] text-white py-4 fixed bottom-0 left-0 right-0 z-50 flex items-center justify-center">
         <div className="text-center">
-          <p>© 2025 Sistema de Proyección de Cursos - <strong>FREDY SANTIAGO PEREZ IMBACHI - JUAN DAVID DELGADO CAICEDO</strong></p>
-          <p className="mt-1">Contacto: <a href="mailto:fredy.perez.i@uniautonoma.edu.co" className="hover:text-blue-300">fredy.perez.i@uniautonoma.edu.co</a></p>
+          <p>© 2025 Sistema de Proyección de Cursos</p>
+          <p className="mt-1">Contacto: <a href="mailto:fredy.perez.i@uniautonoma.edu.co" className="hover:text-blue-300">fredy.perez.i@uniautonoma.edu.co</a><a href="mailto:juan.delgado.c@uniautonoma.edu.co" className="hover:text-blue-300"> - juan.delgado.c@uniautonoma.edu.co</a></p>
+
         </div>
       </footer>
     </div>

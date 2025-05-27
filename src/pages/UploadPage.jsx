@@ -119,7 +119,7 @@ export function UploadPage() {
       <header className="fixed top-0 left-0 right-0 z-50">
         <div className="flex w-full">
           {/* Sección de usuario */}
-          <div className="bg-[#1572E8] text-white py-4 px-4 text-xl font-bold w-1/5 flex items-center space-x-4">
+          <div className="bg-[#1572E8] text-white py-4 px-4 text-lg font-bold w-1/5 flex items-center space-x-4">
             <div>
               <img
                 src={menuIcon}
@@ -137,8 +137,8 @@ export function UploadPage() {
           </div>
 
           {/* Sección de título + Botón "Cerrar sesión" */}
-          <div className="bg-gradient-to-r from-[#00498B] to-[#001325] text-white py-8 px-8 text-xl font-bold w-4/5 flex justify-between items-center">
-            <h1 className="text-xl font-semibold">CARGAR ARCHIVOS CSV</h1>
+          <div className="bg-gradient-to-r from-[#00498B] to-[#001325] text-white py-4 px-8 text-lg font-bold w-4/5 flex justify-between items-center">
+            <h1 className="text-lg font-semibold">CARGAR ARCHIVOS CSV</h1>
             <RedButton onClick={() => navigate('/dashboard')}>Inicio</RedButton>
           </div>
         </div>
@@ -190,19 +190,19 @@ export function UploadPage() {
           <div className="mt-8 flex flex-col space-y-4">
             <button
               onClick={() => openModal('Preliminar')}
-              className="w-full bg-[#1572E8] text-white py-2 rounded-lg font-bold hover:bg-[#0f5fc7] transition-all duration-300"
+              className="w-1/2 bg-[#1572E8] text-white py-1 mx-auto rounded-lg font-bold hover:bg-[#0f5fc7] transition-all duration-300"
             >
               Realizar Proyección Preliminar
             </button>
             <button
               onClick={() => openModal('Final')}
-              className="w-full bg-[#1572E8] text-white py-2 rounded-lg font-bold hover:bg-[#0f5fc7] transition-all duration-300"
+              className="w-1/2 bg-[#1572E8] text-white py-1 mx-auto rounded-lg font-bold hover:bg-[#0f5fc7] transition-all duration-300"
             >
               Realizar Proyección Final
             </button>
             <button
               onClick={() => navigate("/filtro-de-informacion")}
-              className="w-full bg-[#1572E8] text-white py-2 rounded-lg font-bold hover:bg-[#0f5fc7] transition-all duration-300"
+              className="w-1/2 bg-[#1572E8] text-white py-1 mx-auto rounded-lg font-bold hover:bg-[#0f5fc7] transition-all duration-300"
             >
               Ver Proyección
             </button>
@@ -270,10 +270,11 @@ export function UploadPage() {
       </Modal>
 
       {/* Footer fijo igual que en Dashboard */}
-      <footer className="bg-gradient-to-r from-[#00498B] to-[#001325] text-white py-8 fixed bottom-0 left-0 right-0 z-50 flex items-center justify-center">
+      <footer className="bg-gradient-to-r from-[#00498B] to-[#001325] text-white py-4 fixed bottom-0 left-0 right-0 z-50 flex items-center justify-center">
         <div className="text-center">
-          <p>© 2025 Sistema de Proyección de Cursos - <strong>FREDY SANTIAGO PEREZ IMBACHI - JUAN DAVID DELGADO CAICEDO</strong></p>
-          <p className="mt-1">Contacto: <a href="mailto:fredy.perez.i@uniautonoma.edu.co" className="hover:text-blue-300">fredy.perez.i@uniautonoma.edu.co</a></p>
+          <p>© 2025 Sistema de Proyección de Cursos</p>
+          <p className="mt-1">Contacto: <a href="mailto:fredy.perez.i@uniautonoma.edu.co" className="hover:text-blue-300">fredy.perez.i@uniautonoma.edu.co</a><a href="mailto:juan.delgado.c@uniautonoma.edu.co" className="hover:text-blue-300"> - juan.delgado.c@uniautonoma.edu.co</a></p>
+
         </div>
       </footer>
     </div>
