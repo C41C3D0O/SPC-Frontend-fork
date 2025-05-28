@@ -13,7 +13,7 @@ function RedButton({ children, onClick, type = "button", className = "" }) {
     <button
       type={type}
       onClick={onClick}
-      className={`bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded transition-colors duration-300 ${className}`}
+      className={`bg-red-600 hover:bg-red-700 text-white font-semibold py-1 px-2 rounded transition-colors duration-300 ${className}`}
     >
       {children}
     </button>
@@ -41,7 +41,7 @@ export function DashboardVicerrector() {
       <header className="fixed top-0 left-0 right-0 z-50">
         <div className="flex w-full">
           {/* Sección de usuario */}
-          <div className="bg-[#1572E8] text-white py-4 px-4 text-xl font-bold w-1/5 flex items-center space-x-4">
+          <div className="bg-[#1572E8] text-white py-4 px-4 text-lg font-bold w-1/5 flex items-center space-x-4">
             <div>
               <h1 className="text-md font-semibold mb-4 ml-8">
                 {user && user.nombre ? user.nombre : "Desconocido"}

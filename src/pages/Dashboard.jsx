@@ -56,7 +56,7 @@ export function Dashboard() {
         </div>
       </header>
 
-      <div className="flex justify-center items-center flex-1 mt-20">
+      <div className="flex justify-center items-center flex-1">
         <div className="bg-[#d7e9ff] p-10 rounded-lg max-w-4xl w-full">
           <div className="flex flex-wrap justify-center items-center gap-10">
             {/* Cargar archivos */}

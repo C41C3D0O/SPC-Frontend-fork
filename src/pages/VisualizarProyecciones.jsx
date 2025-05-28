@@ -59,14 +59,14 @@ export function VisualizarProyecciones() {
       <button
         type={leftButton.type || "button"}
         onClick={regresarfiltros}
-        className={`bg-[#1572E8] hover:bg-[#0f5fc7] text-white font-semibold py-2 px-4 transition-colors duration-300 rounded-l ${leftButton.className || ""}`}
+        className={`bg-[#1572E8] hover:bg-[#0f5fc7] text-white font-semibold py-1 px-2 transition-colors duration-300 rounded-l ${leftButton.className || ""}`}
       >
         {leftButton.label}
       </button>
       <button
         type={rightButton.type || "button"}
         onClick={rolnavigation}
-        className={`bg-[#1572E8] hover:bg-[#0f5fc7] text-white font-semibold py-2 px-4 transition-colors duration-300 rounded-r ${rightButton.className || ""}`}
+        className={`bg-[#1572E8] hover:bg-[#0f5fc7] text-white font-semibold py-1 px-2 transition-colors duration-300 rounded-r ${rightButton.className || ""}`}
       >
         {rightButton.label}
       </button>
@@ -85,21 +85,21 @@ export function VisualizarProyecciones() {
               <img
                 src={menuIcon}
                 alt="Menu"
-                className="w-8 h-8 ml-5 mr-3"
+                className="w-6 h-6 ml-3"
                 onClick={toggleMenu}
               />
             </div>
             <div>
-              <h1 className="text-lg font-bold mb-4">
+              <h1 className="text-md font-bold mb-4">
                 {user?.nombre || 'Desconocido'}
               </h1>
-              <p className="text-lg">{user?.rol || 'Desconocido'}</p>
+              <p className="text-md">{user?.rol || 'Desconocido'}</p>
             </div>
           </div>
 
           {/* Sección de título */}
           <div className="bg-gradient-to-r from-[#00498B] to-[#001325] text-white py-8 px-8 text-xl font-bold w-4/5 flex justify-between items-center">
-            <h1 className="text-xl font-semibold">
+            <h1 className="text-lg font-semibold">
               VISUALIZAR {selectedTipo === "proyecciones" ? "PROYECCIONES" : 
                          selectedTipo === "cursos" ? "CURSOS" : "COMPORTAMIENTO"}
             </h1>

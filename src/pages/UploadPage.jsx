@@ -16,7 +16,7 @@ function RedButton({ children, onClick, type = "button", className = "" }) {
     <button
       type={type}
       onClick={onClick}
-      className={`bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded transition-colors duration-300 ${className}`}
+      className={`bg-blue-600 hover:bg-blue-700 text-white font-semibold py-1 px-2 rounded transition-colors duration-300 ${className}`}
     >
       {children}
     </button>
@@ -124,12 +124,12 @@ export function UploadPage() {
               <img
                 src={menuIcon}
                 alt="Menu"
-                className="w-6 h-6 ml-5 mr-3"
+                className="w-6 h-6 ml-3"
                 onClick={toggleMenu}
               />
             </div>
             <div>
-              <h1 className="text-xl font-bold mb-4">
+              <h1 className="text-md font-semibold mb-4">
                 {user?.nombre || 'Desconocido'}
               </h1>
               <p className="text-lg">{user?.rol || 'Desconocido'}</p>
@@ -180,10 +180,10 @@ export function UploadPage() {
                     disabled={loading[key]}
                     className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none focus:ring-2 focus:ring-[#1572E8] focus:border-transparent"
                   />
-                  <div className="min-w-[120px]">
+                  
                     {loading[key] && <span className="text-yellow-500">Subiendo…</span>}
                     {status[key] && <span className="text-green-600 font-semibold">✔ Cargado</span>}
-                  </div>
+                  
                 </div>
               </div>
             ))}

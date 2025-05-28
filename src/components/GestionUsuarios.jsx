@@ -14,7 +14,7 @@ function RedButton({ children, onClick, type = "button", className = "" }) {
     <button
       type={type}
       onClick={onClick}
-      className={`bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded transition-colors duration-300 ${className}`}
+      className={`bg-blue-600 hover:bg-blue-700 text-white font-semibold py-1 px-2 rounded transition-colors duration-300 ${className}`}
     >
       {children}
     </button>
@@ -43,12 +43,12 @@ export function GestionUsuarios() {
               <img
                 src={menuIcon}
                 alt="Menu"
-                className="w-8 h-8 ml-5 mr-3"
+                className="w-6 h-6 ml-5"
                 onClick={toggleMenu}
               />
             </div>
             <div>
-              <h1 className="text-xl font-bold mb-4">
+              <h1 className="text-md font-semibold mb-4">
                 {user?.nombre || "Desconocido"}
               </h1>
               <p className="text-lg">{user?.rol || "Desconocido"}</p>
@@ -57,7 +57,7 @@ export function GestionUsuarios() {
 
           {/* Sección de título + Botón "Volver" */}
           <div className="bg-gradient-to-r from-[#00498B] to-[#001325] text-white py-8 px-8 text-xl font-bold w-4/5 flex justify-between items-center">
-            <h1 className="text-xl font-semibold">GESTIÓN DE USUARIOS</h1>
+            <h1 className="text-lg font-semibold">GESTIÓN DE USUARIOS</h1>
             <RedButton onClick={() => navigate("/dashboard")}>Inicio</RedButton>
           </div>
         </div>
