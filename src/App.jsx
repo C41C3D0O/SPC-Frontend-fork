@@ -47,7 +47,7 @@ function App() {
           <Route path="/visualizar-proyecciones" element={isAuthenticated() ? <VisualizarProyecciones /> : <Navigate to="/login" />} />
         </Route>
 
-        <Route path="*" element={<Navigate to={isAuthenticated() ? "/dashboard" : "/login"} replace />} />
+        <Route path="*" element={<Navigate to={isAuthenticated() ? "/login" : "/dashboard"} replace />} />
       </Routes>
     </BrowserRouter>
   );
