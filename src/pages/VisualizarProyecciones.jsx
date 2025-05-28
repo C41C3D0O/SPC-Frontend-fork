@@ -4,7 +4,7 @@ import { toast } from 'react-hot-toast';
 import { useNavigate, useLocation } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import { ListarProyecciones } from "../components/ListarProyecciones";
-import { ListarCursos } from "../components/listarcursos";
+import { ListarCursos } from "../components/listarcursos.jsx";
 import { ListarComportamiento } from "../components/ListarComportamiento";
 import { Menu } from "../components/Menu";
 import menuIcon from "../assets/menu.png";
